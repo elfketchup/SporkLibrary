@@ -8,6 +8,13 @@
 
 import Foundation
 
+// MARK: - Dictionary keys
+
+// Dictionary keys, used if loading any information from a NSDictionary object
+let SMObjectNameKey         = "name" // String, name of object (for identification)
+let SMObjectTagKey          = "tag" // Int, for identifying objects by a number
+let SMObjectUpdateChildren  = "update children" // Bool, on whether or not to update child nodes when calling update function
+
 /*
  SMObject
  
@@ -58,8 +65,32 @@ class SMObject : NSObject {
         super.init()
     }
     
+    init(withDictionary:NSDictionary) {
+        super.init()
+        self.loadFromDictionary(dictionary: withDictionary)
+    }
+    
     override init() {
         super.init()
+    }
+    
+    // MARK: - Dictionary loading functions
+    
+    /*
+     Loads information from a dictionary. Subclasses should override this (but call super.loadFromDictionary at some point)
+    */
+    func loadFromDictionary(dictionary:NSDictionary) {
+        if let nameString = dictionary.object(forKey: SMObjectNameKey) as? String {
+            name = nameString
+        }
+        
+        if let tagNumber = dictionary.object(forKey: SMObjectTagKey) as? NSNumber {
+            tag = tagNumber.intValue
+        }
+        
+        if let shouldUpdateChildren = dictionary.object(forKey: SMObjectUpdateChildren) as? NSNumber {
+            willUpdateChildren = shouldUpdateChildren.boolValue
+        }
     }
     
     // MARK: - Identification functions
@@ -159,9 +190,10 @@ class SMObject : NSObject {
         }
         
         for index in 0..<children!.count {
-            let currentObject = children!.object(at: index) as! SMObject
-            if currentObject.isNamed(string: string) == true {
-                return currentObject
+            if let currentObject = children!.object(at: index) as? SMObject {
+                if currentObject.isNamed(string: string) == true {
+                    return currentObject
+                }
             }
         }
         
@@ -177,9 +209,10 @@ class SMObject : NSObject {
         }
         
         for index in 0..<children!.count {
-            let currentObject = children!.object(at: index) as! SMObject
-            if currentObject.isTagged(number: number) == true {
-                return currentObject
+            if let currentObject = children!.object(at: index) as? SMObject {
+                if currentObject.isTagged(number: number) == true {
+                    return currentObject
+                }
             }
         }
         
@@ -196,9 +229,10 @@ class SMObject : NSObject {
         
         // For loop is done in reverse so that the last-added object is returned
         for index in (0..<children!.count).reversed() {
-            let currentObject = children!.object(at: index) as! SMObject
-            if currentObject.isKind(of: objectClass) {
-                return currentObject
+            if let currentObject = children!.object(at: index) as? SMObject {
+                if currentObject.isKind(of: objectClass) {
+                    return currentObject
+                }
             }
         }
         
@@ -214,9 +248,11 @@ class SMObject : NSObject {
         if children != nil {
             // this loop is done "in reverse" to avoid issues that arise from looping through an array that's having objects removed from it
             for index in (0..<children!.count).reversed() {
-                let object = children!.object(at: index) as! SMObject
-                if object.isNamed(string: string) {
-                    children!.removeObject(at: index)
+                if let object = children!.object(at: index) as? SMObject {
+                    if object.isNamed(string: string) {
+                        object.willBeRemovedFromParent()
+                        children!.removeObject(at: index)
+                    }
                 }
             }
         }
@@ -229,9 +265,11 @@ class SMObject : NSObject {
         if children != nil {
             // this loop is done "in reverse" to avoid issues that arise from looping through an array that's having objects removed from it
             for index in (0..<children!.count).reversed() {
-                let object = children!.object(at: index) as! SMObject
-                if object.isTagged(number: number) {
-                    children!.removeObject(at: index)
+                if let object = children!.object(at: index) as? SMObject {
+                    if object.isTagged(number: number) {
+                        object.willBeRemovedFromParent()
+                        children!.removeObject(at: index)
+                    }
                 }
             }
         }
@@ -244,12 +282,31 @@ class SMObject : NSObject {
         if children != nil {
             // this loop is done "in reverse" to avoid issues that arise from looping through an array that's having objects removed from it
             for index in (0..<children!.count).reversed() {
-                let object = children!.object(at: index) as! SMObject
-                if object.isKind(of: objectClass) {
-                    children!.removeObject(at: index)
+                if let object = children!.object(at: index) as? SMObject {
+                    if object.isKind(of: objectClass) {
+                        object.willBeRemovedFromParent()
+                        children!.removeObject(at: index)
+                    }
                 }
             }
         }
+    }
+    
+    /*
+     Remove all child objects
+    */
+    func removeAllChildren() {
+        if children != nil {
+            for index in (0..<children!.count).reversed() {
+                if let object = children!.object(at: index) as? SMObject {
+                    object.willBeRemovedFromParent()
+                }
+                // remove objects from array regardless of class
+                children!.removeObject(at: index)
+            }
+        }
+        
+        children = nil
     }
     
     // MARK: - Updates

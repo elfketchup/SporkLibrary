@@ -157,10 +157,10 @@ class SMTextNode : SKSpriteNode {
         }
         
         let textAttributes = [
-            NSAttributedString.Key.foregroundColor : _fontColor,
-            NSAttributedString.Key.paragraphStyle : paragraphStyle,
-            NSAttributedString.Key.font : font!
-            ] as [NSAttributedString.Key : Any]
+            NSAttributedStringKey.foregroundColor : _fontColor,
+            NSAttributedStringKey.paragraphStyle : paragraphStyle,
+            NSAttributedStringKey.font : font!
+            ] as [NSAttributedStringKey : Any]
         
         // if an invalid paragraph width was passed in, use default screen width as the paragraph width instead
         if _paragraphWidth <= 0 {

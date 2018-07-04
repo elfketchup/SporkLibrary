@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1A27D21320DBFF98003BA615 /* readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 1A27D21220DBFF98003BA615 /* readme.md */; };
+		1A27D21520E04AB0003BA615 /* SMMovementComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A27D21420E04AB0003BA615 /* SMMovementComponent.swift */; };
+		1A53023C20E98CC40015B862 /* SMCollisionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A53023B20E98CC40015B862 /* SMCollisionComponent.swift */; };
 		1A8C59E920D9AA7000B5B92E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8C59E820D9AA7000B5B92E /* AppDelegate.swift */; };
 		1A8C59EB20D9AA7000B5B92E /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 1A8C59EA20D9AA7000B5B92E /* GameScene.sks */; };
 		1A8C59ED20D9AA7000B5B92E /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 1A8C59EC20D9AA7000B5B92E /* Actions.sks */; };
@@ -18,12 +20,16 @@
 		1A8C59F920D9AA7200B5B92E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A8C59F720D9AA7200B5B92E /* LaunchScreen.storyboard */; };
 		1A8C5A0220D9AA9300B5B92E /* SMObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8C5A0120D9AA9300B5B92E /* SMObject.swift */; };
 		1A8C5A0420D9AAFE00B5B92E /* SMUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8C5A0320D9AAFE00B5B92E /* SMUtils.swift */; };
+		1AA971BA20EAEEAB00F7A185 /* SMSpriteReferencingComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA971B920EAEEAB00F7A185 /* SMSpriteReferencingComponent.swift */; };
 		1AACE68F20DB53E900DDB2AF /* SMSpriteComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AACE68E20DB53E900DDB2AF /* SMSpriteComponent.swift */; };
 		1AACE69120DB545400DDB2AF /* SMTextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AACE69020DB545400DDB2AF /* SMTextNode.swift */; };
+		1AFD919C20EC23D600ED090E /* TestScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFD919B20EC23D600ED090E /* TestScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1A27D21220DBFF98003BA615 /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = readme.md; sourceTree = SOURCE_ROOT; };
+		1A27D21420E04AB0003BA615 /* SMMovementComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMMovementComponent.swift; sourceTree = "<group>"; };
+		1A53023B20E98CC40015B862 /* SMCollisionComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMCollisionComponent.swift; sourceTree = "<group>"; };
 		1A8C59E520D9AA7000B5B92E /* SporkLibrary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporkLibrary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A8C59E820D9AA7000B5B92E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1A8C59EA20D9AA7000B5B92E /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -36,8 +42,10 @@
 		1A8C59FA20D9AA7200B5B92E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A8C5A0120D9AA9300B5B92E /* SMObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMObject.swift; sourceTree = "<group>"; };
 		1A8C5A0320D9AAFE00B5B92E /* SMUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMUtils.swift; sourceTree = "<group>"; };
+		1AA971B920EAEEAB00F7A185 /* SMSpriteReferencingComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSpriteReferencingComponent.swift; sourceTree = "<group>"; };
 		1AACE68E20DB53E900DDB2AF /* SMSpriteComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSpriteComponent.swift; sourceTree = "<group>"; };
 		1AACE69020DB545400DDB2AF /* SMTextNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTextNode.swift; sourceTree = "<group>"; };
+		1AFD919B20EC23D600ED090E /* TestScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +83,7 @@
 				1A8C59EA20D9AA7000B5B92E /* GameScene.sks */,
 				1A8C59EC20D9AA7000B5B92E /* Actions.sks */,
 				1A8C59EE20D9AA7000B5B92E /* GameScene.swift */,
+				1AFD919B20EC23D600ED090E /* TestScene.swift */,
 				1A8C59F020D9AA7000B5B92E /* GameViewController.swift */,
 				1A8C59F220D9AA7000B5B92E /* Main.storyboard */,
 				1A8C59F520D9AA7200B5B92E /* Assets.xcassets */,
@@ -91,6 +100,9 @@
 				1A8C5A0120D9AA9300B5B92E /* SMObject.swift */,
 				1A8C5A0320D9AAFE00B5B92E /* SMUtils.swift */,
 				1AACE68E20DB53E900DDB2AF /* SMSpriteComponent.swift */,
+				1AA971B920EAEEAB00F7A185 /* SMSpriteReferencingComponent.swift */,
+				1A27D21420E04AB0003BA615 /* SMMovementComponent.swift */,
+				1A53023B20E98CC40015B862 /* SMCollisionComponent.swift */,
 				1AACE69020DB545400DDB2AF /* SMTextNode.swift */,
 			);
 			path = "Base classes";
@@ -172,11 +184,15 @@
 			files = (
 				1AACE68F20DB53E900DDB2AF /* SMSpriteComponent.swift in Sources */,
 				1AACE69120DB545400DDB2AF /* SMTextNode.swift in Sources */,
+				1A53023C20E98CC40015B862 /* SMCollisionComponent.swift in Sources */,
 				1A8C5A0220D9AA9300B5B92E /* SMObject.swift in Sources */,
 				1A8C59EF20D9AA7000B5B92E /* GameScene.swift in Sources */,
+				1AA971BA20EAEEAB00F7A185 /* SMSpriteReferencingComponent.swift in Sources */,
 				1A8C59F120D9AA7000B5B92E /* GameViewController.swift in Sources */,
 				1A8C59E920D9AA7000B5B92E /* AppDelegate.swift in Sources */,
 				1A8C5A0420D9AAFE00B5B92E /* SMUtils.swift in Sources */,
+				1AFD919C20EC23D600ED090E /* TestScene.swift in Sources */,
+				1A27D21520E04AB0003BA615 /* SMMovementComponent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
