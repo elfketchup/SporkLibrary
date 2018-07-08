@@ -63,11 +63,14 @@ class TestScene : SKScene {
         witchEntity.addObject(object: witchSprite)
         
         let witchMover = SMMovementComponent(withSpriteComponent: witchSprite)
-        witchMover.velocity = CGPoint(x: 0.1, y: 0.2)
+        witchMover.velocity = CGPoint(x: 1, y: 2)
         witchEntity.addObject(object: witchMover)
         
         let witchCollision = SMCollisionComponent(withSpriteComponent: witchSprite)
         //let witchCollision = SMCollisionComponent(withName:"collider")
+        witchCollision.canGoOffscreen = false
+        witchCollision.bounceOffScreenEdges = true
+        witchCollision.collisionType = .Box
         witchEntity.addObject(object: witchCollision)
         
         /** SECOND WITCH ENTITY **/
@@ -105,9 +108,9 @@ class TestScene : SKScene {
         secondWitch.update(deltaTime: deltaTime)
         
         // TRACK DISTANCE
-        if let firstWitchCollider = witchEntity.objectOfType(ofType: SMCollisionComponent.self) as? SMCollisionComponent {
+        /*if let firstWitchCollider = witchEntity.objectOfType(ofType: SMCollisionComponent.self) as? SMCollisionComponent {
             let distance = firstWitchCollider.distanceFromEntity(entity: secondWitch)
             distanceLabel.text = "Distance between sprites: \(distance)"
-        }
+        }*/
     }
 }

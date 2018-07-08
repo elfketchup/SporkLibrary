@@ -9,11 +9,12 @@
 import SpriteKit
 
 // MARK: - Dictionary keys
-let SMMovementComponentVelocityXKey         = "velocity x" // CGFloat, determines horizontal velocity
-let SMMovementComponentVelocityYKey         = "velocity y" // CGFloat, determines vertical velocity
-let SMMovementComponentAccelerationXKey     = "acceleration x" // CGFloat, determines acceleration along x plane
-let SMMovementComponentAccelerationYKey     = "acceleration y" // CGFloat, determines acceleration along y plane
-let SMMovementComponentMotionTypeKey        = "motion type" // String, can be 'normal', 'stopped', or 'reversed'
+let SMMovementComponentVelocityXKey             = "velocity x" // CGFloat, determines horizontal velocity
+let SMMovementComponentVelocityYKey             = "velocity y" // CGFloat, determines vertical velocity
+let SMMovementComponentAccelerationXKey         = "acceleration x" // CGFloat, determines acceleration along x plane
+let SMMovementComponentAccelerationYKey         = "acceleration y" // CGFloat, determines acceleration along y plane
+let SMMovementComponentMotionTypeKey            = "motion type" // String, can be 'normal', 'stopped', or 'reversed'
+let SMMovementComponentDecelerationFactorKey    = "deceleration factor" // CGFloat, 1.0 means no deceleration, 0.5 halves the speed each frame, 0.9 simulates air resistance (supposedly)
 
 // Movement types (as strings)
 let SMMovementComponentMotionNormalString       = "normal" // normal way of moving, just adds things up normally
@@ -36,6 +37,9 @@ class SMMovementComponent : SMSpriteReferencingComponent {
     
     // The rate at which to modify the velocity
     var acceleration = CGPoint(x: 0, y: 0)
+    
+    // Deceleration factor, or velocity x (deceleration) per frame. 1.0 means no deceleration, 0.5 halves the speed each frame, 0.9 simulates air resistance (supposedly)
+    var decelerationFactor = CGFloat(1.0) // set to 1.0 means it has no effect
     
     // Motion type
     var motionType = Int8(0) // set to "stopped" by default
@@ -76,6 +80,11 @@ class SMMovementComponent : SMSpriteReferencingComponent {
             acceleration.y = CGFloat(accelY.doubleValue)
         }
         
+        // Load deceleration data
+        if let decel = dictionary.object(forKey: SMMovementComponentDecelerationFactorKey) as? NSNumber {
+            decelerationFactor = CGFloat(decel.doubleValue)
+        }
+        
         // determine motion type
         if let motionTypeString = dictionary.object(forKey: SMMovementComponentMotionTypeKey) as? String {
             if SMStringsAreSame(first: motionTypeString, second: SMMovementComponentMotionNormalString) == true {
@@ -103,6 +112,18 @@ class SMMovementComponent : SMSpriteReferencingComponent {
         acceleration = CGPoint(x: 0, y: 0)
     }
     
+    // Reverse velocity (useful if you need the entity to suddenly go the other way)
+    func reverseVelocity() {
+        velocity.x = velocity.x * (-1.0)
+        velocity.y = velocity.y * (-1.0)
+    }
+    
+    // Reverse acceleration
+    func reverseAcceleration() {
+        acceleration.x = acceleration.x * (-1.0)
+        acceleration.y = acceleration.y * (-1.0)
+    }
+    
     // Modify acceleration by CGPoint value
     func modifyAccelerationBy(point:CGPoint) {
         acceleration.x = acceleration.x + point.x
@@ -123,8 +144,8 @@ class SMMovementComponent : SMSpriteReferencingComponent {
     override func update(deltaTime: Double) {
         if let theSprite = self.sprite() {
             // Update velocity
-            velocity.x = velocity.x + acceleration.x
-            velocity.y = velocity.y + acceleration.y
+            velocity.x = (velocity.x + acceleration.x) * decelerationFactor
+            velocity.y = (velocity.y + acceleration.y) * decelerationFactor
             
             // Update sprite position
             switch( motionType ) {
@@ -143,3 +164,14 @@ class SMMovementComponent : SMSpriteReferencingComponent {
         }
     }
 }
+
+// MARK: - Helper functions
+
+func SMMovementComponentFromEntity(entity:SMObject) -> SMMovementComponent? {
+    if let component = entity.objectOfType(ofType: SMMovementComponent.self) as? SMMovementComponent {
+        return component
+    }
+    
+    return nil
+}
+

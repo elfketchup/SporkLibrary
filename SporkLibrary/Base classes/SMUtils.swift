@@ -12,8 +12,8 @@ import SpriteKit
 import AVFoundation
 
 // Set screen/view dimensions; use default sizes for iPhone SE
-var SMScreenWidthInPoints:CGFloat   = 568.0;
-var SMScreenHeightInPoints:CGFloat  = 320.0;
+var SMScreenWidthInPoints:CGFloat   = 320.0;
+var SMScreenHeightInPoints:CGFloat  = 568.0;
 var SMScreenDimensionsHaveBeenSet   = false
 
 // Information regarding the current view
@@ -27,7 +27,7 @@ func SMSetScreenSizeInPointsTo(width:CGFloat, height:CGFloat) {
     SMScreenWidthInPoints = fabs( width );
     SMScreenHeightInPoints = fabs( height );
     
-    print("[SMSetScreenSizeInPoints] - width: \(SMScreenWidthInPoints) | height: \(SMScreenHeightInPoints)")
+    //print("[SMSetScreenSizeInPoints] - width: \(SMScreenWidthInPoints) | height: \(SMScreenHeightInPoints)")
     
     SMScreenDimensionsHaveBeenSet = true
 }
