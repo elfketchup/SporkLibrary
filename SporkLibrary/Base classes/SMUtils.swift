@@ -166,6 +166,66 @@ func EKFindAngleBetweenPoints( original:CGPoint, target:CGPoint ) -> CGFloat {
     return f; // This should be the right angle now
 }
 
+func SMClampDouble(input:Double, min:Double, max:Double) -> Double {
+    var result = input
+    var actualMin = min
+    var actualMax = max
+    
+    if min > max {
+        actualMin = max
+        actualMax = min
+    }
+    
+    if result < actualMin {
+        result = actualMin
+    }
+    if result > actualMax {
+        result = actualMax
+    }
+    
+    return result
+}
+
+func SMClampFloat(input:CGFloat, min:CGFloat, max:CGFloat) -> CGFloat {
+    var result = input
+    var actualMin = min
+    var actualMax = max
+    
+    if min > max {
+        actualMin = max
+        actualMax = min
+    }
+    
+    if result < actualMin {
+        result = actualMin
+    }
+    if result > actualMax {
+        result = actualMax
+    }
+    
+    return result
+}
+
+func SMClampInteger(input:Int, min:Int, max:Int) -> Int {
+    var result = input
+    var actualMin = min
+    var actualMax = max
+    
+    if min > max {
+        actualMin = max
+        actualMax = min
+    }
+    
+    if result < actualMin {
+        result = actualMin
+    }
+    if result > actualMax {
+        result = actualMax
+    }
+    
+    return result
+}
+
 // MARK: - Collision functions
 
 // Retrieves bounding box of sprite node

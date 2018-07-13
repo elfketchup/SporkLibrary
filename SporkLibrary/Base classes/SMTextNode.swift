@@ -123,6 +123,14 @@ class SMTextNode : SKSpriteNode {
         refreshSKTexture()
     }
     
+    init(text:String) {
+        let dummyTexture = SKTexture()
+        super.init(texture: dummyTexture, color: UIColor.white, size: dummyTexture.size())
+        
+        _text = text
+        refreshSKTexture()
+    }
+    
     func refreshSKTexture() {
         if let newTextImage = self.imageFromText(inputText: _text) {
             let newTexture:SKTexture = SKTexture(image: newTextImage)
