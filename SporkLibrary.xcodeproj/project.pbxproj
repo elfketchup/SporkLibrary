@@ -20,6 +20,8 @@
 		1A8C59F920D9AA7200B5B92E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A8C59F720D9AA7200B5B92E /* LaunchScreen.storyboard */; };
 		1A8C5A0220D9AA9300B5B92E /* SMObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8C5A0120D9AA9300B5B92E /* SMObject.swift */; };
 		1A8C5A0420D9AAFE00B5B92E /* SMUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8C5A0320D9AAFE00B5B92E /* SMUtils.swift */; };
+		1AA135D920FD959300F445D2 /* ButtonTestScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA135D820FD959300F445D2 /* ButtonTestScene.swift */; };
+		1AA135DB20FFC00D00F445D2 /* SMButtonManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA135DA20FFC00D00F445D2 /* SMButtonManager.swift */; };
 		1AA971BA20EAEEAB00F7A185 /* SMSpriteReferencingComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA971B920EAEEAB00F7A185 /* SMSpriteReferencingComponent.swift */; };
 		1AACE68F20DB53E900DDB2AF /* SMSpriteComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AACE68E20DB53E900DDB2AF /* SMSpriteComponent.swift */; };
 		1AACE69120DB545400DDB2AF /* SMTextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AACE69020DB545400DDB2AF /* SMTextNode.swift */; };
@@ -43,6 +45,8 @@
 		1A8C59FA20D9AA7200B5B92E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A8C5A0120D9AA9300B5B92E /* SMObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMObject.swift; sourceTree = "<group>"; };
 		1A8C5A0320D9AAFE00B5B92E /* SMUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMUtils.swift; sourceTree = "<group>"; };
+		1AA135D820FD959300F445D2 /* ButtonTestScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTestScene.swift; sourceTree = "<group>"; };
+		1AA135DA20FFC00D00F445D2 /* SMButtonManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMButtonManager.swift; sourceTree = "<group>"; };
 		1AA971B920EAEEAB00F7A185 /* SMSpriteReferencingComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSpriteReferencingComponent.swift; sourceTree = "<group>"; };
 		1AACE68E20DB53E900DDB2AF /* SMSpriteComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSpriteComponent.swift; sourceTree = "<group>"; };
 		1AACE69020DB545400DDB2AF /* SMTextNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTextNode.swift; sourceTree = "<group>"; };
@@ -87,6 +91,7 @@
 				1A8C59EC20D9AA7000B5B92E /* Actions.sks */,
 				1A8C59EE20D9AA7000B5B92E /* GameScene.swift */,
 				1AFD919B20EC23D600ED090E /* TestScene.swift */,
+				1AA135D820FD959300F445D2 /* ButtonTestScene.swift */,
 				1A8C59F020D9AA7000B5B92E /* GameViewController.swift */,
 				1A8C59F220D9AA7000B5B92E /* Main.storyboard */,
 				1A8C59F520D9AA7200B5B92E /* Assets.xcassets */,
@@ -115,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				1AF0208020F44DCB00707748 /* SMButtonComponent.swift */,
+				1AA135DA20FFC00D00F445D2 /* SMButtonManager.swift */,
 			);
 			path = "UI classes";
 			sourceTree = "<group>";
@@ -199,8 +205,10 @@
 				1A53023C20E98CC40015B862 /* SMCollisionComponent.swift in Sources */,
 				1A8C5A0220D9AA9300B5B92E /* SMObject.swift in Sources */,
 				1A8C59EF20D9AA7000B5B92E /* GameScene.swift in Sources */,
+				1AA135D920FD959300F445D2 /* ButtonTestScene.swift in Sources */,
 				1AA971BA20EAEEAB00F7A185 /* SMSpriteReferencingComponent.swift in Sources */,
 				1A8C59F120D9AA7000B5B92E /* GameViewController.swift in Sources */,
+				1AA135DB20FFC00D00F445D2 /* SMButtonManager.swift in Sources */,
 				1A8C59E920D9AA7000B5B92E /* AppDelegate.swift in Sources */,
 				1A8C5A0420D9AAFE00B5B92E /* SMUtils.swift in Sources */,
 				1AFD919C20EC23D600ED090E /* TestScene.swift in Sources */,
