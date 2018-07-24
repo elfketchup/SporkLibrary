@@ -502,8 +502,8 @@ class SMButtonComponent : SMObject {
         
         var buttonSize = labelNode!.frame.size
         //var origin = labelNode!.position
-        let halfWidthOfLabel = labelNode!.frame.size.height * 0.5
-        let halfHeightOfLabel = labelNode!.frame.size.width * 0.5
+        let halfWidthOfLabel = labelNode!.frame.size.width * 0.5 //labelNode!.fontSize * 0.5
+        let halfHeightOfLabel = labelNode!.frame.size.height * 0.5 //labelNode!.fontSize * 0.5 //labelNode!.frame.size.width * 0.5
         
         if buttonNormalSprite != nil {
             buttonSize = buttonNormalSprite!.frame.size
@@ -611,6 +611,22 @@ class SMButtonComponent : SMObject {
             labelNode!.removeAllActions()
             labelNode!.removeFromParent()
         }
+    }
+    
+    func frame() -> CGRect? {
+        if buttonNormalSprite != nil {
+            return buttonNormalSprite!.frame
+        }
+        
+        if buttonPressedSprite != nil {
+            return buttonPressedSprite!.frame
+        }
+        
+        if labelNode != nil {
+            return labelNode!.frame
+        }
+        
+        return nil
     }
     
     func sprite() -> SKSpriteNode? {

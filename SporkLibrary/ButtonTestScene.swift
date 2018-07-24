@@ -26,9 +26,15 @@ class ButtonTestScene : SKScene {
     
     func loadButtonTest() {
         
+        let screenWidth = self.frame.size.width
+        let screenHeight = self.frame.size.height
+        buttonManager.autoPositionStyle = .Below
+        
+        //print("Screen width: \(screenWidth) | screen height: \(screenHeight)")
+        
         //let label = SMTextNode(text: "Button not pressed")
-        label.position = CGPoint(x: 150, y: 300)
-        label.fontSize = 21
+        label.position = CGPoint(x: 150, y: 100)
+        label.fontSize = 15
         self.addChild(label)
         
         let textOffset = CGPoint(x: 0, y: 0)
@@ -46,10 +52,21 @@ class ButtonTestScene : SKScene {
         buttonComponent.buttonPressedColor = UIColor.cyan
         buttonComponent.buttonNormalColor = UIColor.white
         buttonComponent.buttonTag = "Hey"
-        
         buttonEntity.addObject(object: buttonComponent)
         
+        let secondButton = SMButtonComponent(withLabelNode: SMTextNode(text: "Yo bro"),
+                                             andSpriteNode: SKSpriteNode(imageNamed: "choiceboxhalf"))
+        secondButton.position = CGPoint(x: 100, y: 100)
+        secondButton.addToNode(node: self)
+        secondButton.buttonTag = "Yo bro"
+        secondButton.buttonPressedColor = UIColor.red
+        let secondEntity = SMObject()
+        secondEntity.addObject(object: secondButton)
+        
         buttonManager.addButton(entity: buttonEntity)
+        buttonManager.addButton(entity: secondEntity)
+
+        buttonManager.autoPositionOrigin = CGPoint(x: screenWidth * 0.5, y: screenHeight * 0.5)
     }
     
     // MARK: - Update
@@ -64,10 +81,15 @@ class ButtonTestScene : SKScene {
     override func update(_ currentTime: TimeInterval) {
         buttonManager.update(deltaTime: currentTime)
         
+        /*
         if let currentQueue = buttonManager.currentQueue() {
             //print("queue found")
             self.handleButtonQueue(array: currentQueue)
             buttonManager.removeCurrentQueue()
+        }*/
+        
+        if let buttonQueue = buttonManager.popCurrentQueue() {
+            self.handleButtonQueue(array: buttonQueue)
         }
         
         /*buttonEntity.update(deltaTime: currentTime)

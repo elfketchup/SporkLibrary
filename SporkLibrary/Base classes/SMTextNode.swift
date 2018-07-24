@@ -23,7 +23,7 @@ class SMTextNode : SKSpriteNode {
     
     var _fontColor:UIColor          = UIColor.white
     var _fontName                   = "Helvetica"
-    var _fontSize                   = CGFloat(32)
+    var _fontSize                   = CGFloat(16)
     var _horizontalAlignmentMode    = SKLabelHorizontalAlignmentMode.center
     var _verticalAlignmentMode      = SKLabelVerticalAlignmentMode.baseline
     var _text                       = ""
