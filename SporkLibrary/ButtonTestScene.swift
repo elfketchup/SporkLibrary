@@ -132,6 +132,9 @@ class ButtonTestScene : SKScene {
                 button.touchEndedAt(point: pos)
             }*/
             buttonManager.touchEndedAt(point: pos)
+            
+            buttonManager.autoPositionAnimationSpeed = 0.5
+            buttonManager.autoPositionStyle = .Horizontal
         }
     }
 }

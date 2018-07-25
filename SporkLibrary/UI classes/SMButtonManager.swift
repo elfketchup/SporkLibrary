@@ -269,8 +269,9 @@ class SMButtonManager : SMObject {
         if autoPositionAnimationSpeed <= 0.0 {
             component.position = buttonPosition
         } else {
-            print("[SMButtonManager] WARNING: Animation of button auto-positioning not implemented yet.")
-            component.position = buttonPosition
+            //print("[SMButtonManager] WARNING: Animation of button auto-positioning not implemented yet.")
+            //component.position = buttonPosition
+            component.setPositionWithAnimation(point: buttonPosition, animationSpeed: autoPositionAnimationSpeed)
         }
     }
     

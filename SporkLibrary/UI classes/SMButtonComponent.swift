@@ -586,6 +586,40 @@ class SMButtonComponent : SMObject {
     
     // MARK: - Sprite functions
     
+    func setPositionWithAnimation(point:CGPoint, animationSpeed:Double) {
+        var differenceInPosition = CGPoint(x: 0, y: 0)
+        differenceInPosition.x = point.x - self.position.x
+        differenceInPosition.y = point.y - self.position.y
+        
+        // check if there's no difference at all
+        if differenceInPosition.x == 0 && differenceInPosition.y == 0 {
+            return
+        }
+        
+        //print("point - x: \(point.x) | y: \(point.y)")
+        //print("difference in position x: \(differenceInPosition.x) | y: \(differenceInPosition.y)")
+        
+        if buttonNormalSprite != nil {
+            let moveNormalSprite = SKAction.moveBy(x: differenceInPosition.x, y: differenceInPosition.y, duration: animationSpeed)
+            buttonNormalSprite!.removeAllActions()
+            buttonNormalSprite!.run(moveNormalSprite)
+        }
+        
+        if buttonPressedSprite != nil {
+            let movePressedSprite = SKAction.moveBy(x: differenceInPosition.x, y: differenceInPosition.y, duration: animationSpeed)
+            buttonPressedSprite!.removeAllActions()
+            buttonPressedSprite!.run(movePressedSprite)
+        }
+        
+        if labelNode != nil {
+            let moveLabelNode = SKAction.moveBy(x: differenceInPosition.x, y: differenceInPosition.y, duration: animationSpeed)
+            labelNode!.removeAllActions()
+            labelNode!.run(moveLabelNode)
+        }
+        
+        _position = point
+    }
+    
     func addToNode(node:SKNode) {
         if buttonNormalSprite != nil {
             node.addChild(buttonNormalSprite!)
