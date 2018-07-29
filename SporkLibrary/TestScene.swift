@@ -14,6 +14,7 @@ class TestScene : SKScene {
     var secondWitch = SMObject()
     var label = SMTextNode(fontNamed: "Helvetica")
     var distanceLabel = SMTextNode(fontNamed: "Helvetica")
+    let labelWithOffset = SMTextNode(text: "This is a witch")
     
     required init?(coder aDecoder: NSCoder) {
         // does nothing
@@ -27,6 +28,8 @@ class TestScene : SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         self.doEntityCollisionTest(deltaTime: currentTime)
+        
+        labelWithOffset.updateOffsets()
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -82,6 +85,11 @@ class TestScene : SKScene {
         
         let secondCollider = SMCollisionComponent(withSpriteComponent: witchSpriteTwo)
         secondWitch.addObject(object: secondCollider)
+        
+        labelWithOffset.fontSize = 16
+        labelWithOffset.offsetSprite = SMSpriteNodeFromEntity(entity: secondWitch)
+        labelWithOffset.offsetFromSpriteType = .AboveSprite
+        self.addChild(labelWithOffset)
     }
     
     func touchMovedEntityCollisionTest(touchPos:CGPoint) {

@@ -25,6 +25,7 @@
 		1AA971BA20EAEEAB00F7A185 /* SMSpriteReferencingComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA971B920EAEEAB00F7A185 /* SMSpriteReferencingComponent.swift */; };
 		1AACE68F20DB53E900DDB2AF /* SMSpriteComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AACE68E20DB53E900DDB2AF /* SMSpriteComponent.swift */; };
 		1AACE69120DB545400DDB2AF /* SMTextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AACE69020DB545400DDB2AF /* SMTextNode.swift */; };
+		1AEE75A22109674400F0C779 /* SMBarDisplayComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEE75A12109674400F0C779 /* SMBarDisplayComponent.swift */; };
 		1AF0208120F44DCB00707748 /* SMButtonComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF0208020F44DCB00707748 /* SMButtonComponent.swift */; };
 		1AFD919C20EC23D600ED090E /* TestScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFD919B20EC23D600ED090E /* TestScene.swift */; };
 /* End PBXBuildFile section */
@@ -50,6 +51,7 @@
 		1AA971B920EAEEAB00F7A185 /* SMSpriteReferencingComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSpriteReferencingComponent.swift; sourceTree = "<group>"; };
 		1AACE68E20DB53E900DDB2AF /* SMSpriteComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSpriteComponent.swift; sourceTree = "<group>"; };
 		1AACE69020DB545400DDB2AF /* SMTextNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTextNode.swift; sourceTree = "<group>"; };
+		1AEE75A12109674400F0C779 /* SMBarDisplayComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMBarDisplayComponent.swift; sourceTree = "<group>"; };
 		1AF0208020F44DCB00707748 /* SMButtonComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMButtonComponent.swift; sourceTree = "<group>"; };
 		1AFD919B20EC23D600ED090E /* TestScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -121,6 +123,7 @@
 			children = (
 				1AF0208020F44DCB00707748 /* SMButtonComponent.swift */,
 				1AA135DA20FFC00D00F445D2 /* SMButtonManager.swift */,
+				1AEE75A12109674400F0C779 /* SMBarDisplayComponent.swift */,
 			);
 			path = "UI classes";
 			sourceTree = "<group>";
@@ -202,6 +205,7 @@
 				1AACE68F20DB53E900DDB2AF /* SMSpriteComponent.swift in Sources */,
 				1AF0208120F44DCB00707748 /* SMButtonComponent.swift in Sources */,
 				1AACE69120DB545400DDB2AF /* SMTextNode.swift in Sources */,
+				1AEE75A22109674400F0C779 /* SMBarDisplayComponent.swift in Sources */,
 				1A53023C20E98CC40015B862 /* SMCollisionComponent.swift in Sources */,
 				1A8C5A0220D9AA9300B5B92E /* SMObject.swift in Sources */,
 				1A8C59EF20D9AA7000B5B92E /* GameScene.swift in Sources */,

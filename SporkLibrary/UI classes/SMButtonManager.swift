@@ -114,9 +114,9 @@ class SMButtonManager : SMObject {
     
     // MARK: - Initialization
     
-    override init(withDictionary: NSDictionary) {
+    override init(dictionary: NSDictionary) {
         super.init()
-        self.loadFromDictionary(dictionary: withDictionary)
+        self.loadFromDictionary(dictionary: dictionary)
     }
     
     override init() {
@@ -193,7 +193,7 @@ class SMButtonManager : SMObject {
             for i in 0..<buttonInfoArray.count {
                 // load button component from dictionary
                 let buttonDictionary = buttonInfoArray.object(at: i) as! NSDictionary       // load NSDictionary object from array
-                let buttonComponent = SMButtonComponent(withDictionary: buttonDictionary)   // create button component using NSDictionary
+                let buttonComponent = SMButtonComponent(dictionary: buttonDictionary)   // create button component using NSDictionary
                 
                 // add button component to entity
                 let entity = SMObject()

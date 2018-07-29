@@ -12,6 +12,16 @@ let SMTextNodeMinimumFontSizeAllowed    = CGFloat( 1.0 )
 let SMTextNodeDefaultFontName           = "Helvetica"
 let SMTextNodeDefaultParagraphHeight    = CGFloat( 320.0 )
 
+// For when SMTextNode is used as a label for a sprite (such as text on a button, a health percentage display on a health bar, etc).
+// This determines where the text appears, relative to the sprite.
+enum SMTextNodeOffsetFromSpriteType : Int8 {
+    case CenteredOnSprite       = 0
+    case BelowSprite            = 1
+    case AboveSprite            = 2
+    case LeftOfSprite           = 3
+    case RightOfSprite          = 4
+}
+
 /*
  SMTextNode
  
@@ -21,15 +31,51 @@ class SMTextNode : SKSpriteNode {
     
     // MARK: - Instance variables
     
-    var _fontColor:UIColor          = UIColor.white
-    var _fontName                   = "Helvetica"
-    var _fontSize                   = CGFloat(16)
-    var _horizontalAlignmentMode    = SKLabelHorizontalAlignmentMode.center
-    var _verticalAlignmentMode      = SKLabelVerticalAlignmentMode.baseline
-    var _text                       = ""
-    var _paragraphWidth             = CGFloat(0)
+    private var _fontColor:UIColor          = UIColor.white
+    private var _fontName                   = "Helvetica"
+    private var _fontSize                   = CGFloat(16)
+    private var _horizontalAlignmentMode    = SKLabelHorizontalAlignmentMode.center
+    private var _verticalAlignmentMode      = SKLabelVerticalAlignmentMode.baseline
+    private var _text                       = ""
+    private var _paragraphWidth             = CGFloat(0)
+    private var _offsetFromOrigin           = CGPoint(x: 0, y: 0)
+    
+    // used for offsets from sprite
+    private var _offsetFromSpriteType       = SMTextNodeOffsetFromSpriteType.CenteredOnSprite
+    private var _offsetSprite:SKSpriteNode? = nil
     
     // MARK: - Getter/setter methods
+    
+    var offsetFromOrigin : CGPoint {
+        get {
+            return _offsetFromOrigin
+        }
+        set(value) {
+            _offsetFromOrigin = value
+            updateOffsets()
+        }
+    }
+    
+    var offsetSprite : SKSpriteNode? {
+        get {
+            return _offsetSprite
+        }
+        set(sprite) {
+            _offsetSprite = sprite
+            updateOffsets()
+        }
+    }
+    
+    var offsetFromSpriteType : SMTextNodeOffsetFromSpriteType {
+        get {
+            return _offsetFromSpriteType
+        }
+        set(value) {
+            _offsetFromSpriteType = value
+            updateOffsets()
+        }
+    }
+    
     
     var paragraphWidth:CGFloat {
         get {
@@ -104,6 +150,48 @@ class SMTextNode : SKSpriteNode {
             }
             self.refreshSKTexture()
         }
+    }
+    
+    // MARK: - Offets and positions
+    
+    func updateOffsets() {
+        // check if there's no sprite to offset from
+        if _offsetSprite == nil {
+            // use a regular offset position, if one is provided
+            if _offsetFromOrigin.x != 0.0 || _offsetFromOrigin.y != 0.0 {
+                let updatedPosition = SMPositionAddTwoPositions(first: self.position, second: _offsetFromOrigin)
+                self.position = updatedPosition
+            }
+            
+            return
+        }
+        
+        //let spriteSize = _offsetSprite!.frame.size
+        let halfWidthOfText = self.frame.size.width * 0.5
+        let halfHeightOfText = self.frame.size.height * 0.5
+        let originForOffset = _offsetSprite!.position
+        var basePosition = _offsetSprite!.position
+        let halfWidthOfSprite = _offsetSprite!.frame.size.width * 0.5
+        let halfHeightOfSprite = _offsetSprite!.frame.size.height * 0.5
+        
+        switch(_offsetFromSpriteType) {
+        case .CenteredOnSprite:
+            basePosition = offsetSprite!.position
+            
+        case .AboveSprite:
+            basePosition.y = originForOffset.y + halfHeightOfSprite + halfHeightOfText
+            
+        case .BelowSprite:
+            basePosition.y = originForOffset.y - halfHeightOfSprite - halfHeightOfText
+            
+        case .LeftOfSprite:
+            basePosition.x = originForOffset.x - halfWidthOfSprite - halfWidthOfText
+            
+        case .RightOfSprite:
+            basePosition.x = originForOffset.x + halfWidthOfSprite + halfWidthOfText
+        }
+        
+        self.position = SMPositionAddTwoPositions(first: basePosition, second: _offsetFromOrigin)
     }
     
     // MARK: - Initialization

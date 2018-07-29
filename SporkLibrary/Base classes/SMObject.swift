@@ -65,9 +65,9 @@ class SMObject : NSObject {
         super.init()
     }
     
-    init(withDictionary:NSDictionary) {
+    init(dictionary:NSDictionary) {
         super.init()
-        self.loadFromDictionary(dictionary: withDictionary)
+        self.loadFromDictionary(dictionary: dictionary)
     }
     
     override init() {

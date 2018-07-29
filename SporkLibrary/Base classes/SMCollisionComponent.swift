@@ -57,9 +57,9 @@ class SMCollisionComponent : SMSpriteReferencingComponent {
     
     // MARK: - Initializer
     
-    override init(withDictionary: NSDictionary) {
+    override init(dictionary: NSDictionary) {
         super.init()
-        self.loadFromDictionary(dictionary: withDictionary)
+        self.loadFromDictionary(dictionary: dictionary)
     }
     
     override init(withSpriteNode: SKSpriteNode) {

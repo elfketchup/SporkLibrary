@@ -34,9 +34,9 @@ class SMSpriteComponent : SMObject {
         sprite = withSpriteNode
     }
     
-    override init(withDictionary: NSDictionary) {
+    override init(dictionary: NSDictionary) {
         super.init()
-        self.loadFromDictionary(dictionary: withDictionary)
+        self.loadFromDictionary(dictionary: dictionary)
     }
     
     // MARK: - Dictionary functions
