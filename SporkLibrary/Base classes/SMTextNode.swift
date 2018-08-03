@@ -12,6 +12,26 @@ let SMTextNodeMinimumFontSizeAllowed    = CGFloat( 1.0 )
 let SMTextNodeDefaultFontName           = "Helvetica"
 let SMTextNodeDefaultParagraphHeight    = CGFloat( 320.0 )
 
+// Dictionary keys
+let SMTextNodeTextKey                   = "text"                // String, text contents of display node
+let SMTextNodeFontNameKey               = "font name"           // String, name of font to use (example: "Helvetica")
+let SMTextNodeFontSizeKey               = "font size"           // Double, determines font size
+let SMTextNodeFontColorRKey             = "r"                   // Double, red color in RGB
+let SMTextNodeFontColorGKey             = "g"                   // Double, green color in RGB
+let SMTextNodeFontColorBKey             = "b"                   // Double, blue color in RGB
+let SMTextNodeAlphaKey                  = "alpha"               // Double, determines transparency in node
+let SMTextNodeParagraphWidthKey         = "paragraph width"     // CGFloat, width of paragraph (in points)
+//let SMTextNodeParagraphHeightKey        = "paragraph height"    // CGFloat, height of paragraph (in points)
+let SMTextNodeOffsetFromSpriteTypeKey   = "sprite offset type"  // String, determines offset from sprite
+let SMTextNodeOffsetSpriteNodeKey       = "offset sprite node"  // SKSpriteNode, reference to sprite to offset from
+
+// Offset string values
+let SMTextNodeOffsetFromSpriteTypeStringCentered    = "center"
+let SMTextNodeOffsetFromSpriteTypeStringBelow       = "below"
+let SMTextNodeOffsetFromSpriteTypeStringAbove       = "above"
+let SMTextNodeOffsetFromSpriteTypeStringLeft        = "left"
+let SMTextNodeOffsetFromSpriteTypeStringRight       = "right"
+
 // For when SMTextNode is used as a label for a sprite (such as text on a button, a health percentage display on a health bar, etc).
 // This determines where the text appears, relative to the sprite.
 enum SMTextNodeOffsetFromSpriteType : Int8 {
@@ -152,6 +172,115 @@ class SMTextNode : SKSpriteNode {
         }
     }
     
+    // MARK: - Initialization
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        refreshSKTexture()
+    }
+    
+    init(fontNamed:String) {
+        // The next two lines of code exist because Swift 4 keeps throwing up error messages if I don't have them.
+        // There's probably a really elegant way of getting around this, but this will do for now.
+        let dummyTexture = SKTexture()
+        super.init(texture: dummyTexture, color: UIColor.white, size: dummyTexture.size())
+        
+        _fontName = fontNamed
+        refreshSKTexture()
+    }
+    
+    init(text:String) {
+        let dummyTexture = SKTexture()
+        super.init(texture: dummyTexture, color: UIColor.white, size: dummyTexture.size())
+        
+        _text = text
+        refreshSKTexture()
+    }
+    
+    init(dictionary:NSDictionary) {
+        let dummyTexture = SKTexture()
+        super.init(texture: dummyTexture, color: UIColor.white, size: dummyTexture.size())
+        
+        self.loadFromDictionary(dictionary: dictionary)
+    }
+    
+    // MARK: - Loading from dictionary
+    
+    func loadFromDictionary(dictionary:NSDictionary) {
+        if dictionary.count < 1 {
+            return
+        }
+        
+        var r = 1.0
+        var g = 1.0
+        var b = 1.0
+        var a = 1.0
+        var useCustomColor = false
+        
+        if let textString = dictionary.object(forKey: SMTextNodeTextKey) as? String {
+            _text = textString
+        }
+        
+        if let fontNameValue = dictionary.object(forKey: SMTextNodeFontNameKey) as? String {
+            _fontName = fontNameValue
+        }
+        
+        if let fontSizeValue = dictionary.object(forKey: SMTextNodeFontSizeKey) as? NSNumber {
+            _fontSize = CGFloat(fontSizeValue.doubleValue)
+        }
+        
+        if let paragraphWidthValue = dictionary.object(forKey: SMTextNodeParagraphWidthKey) as? NSNumber {
+            _paragraphWidth = CGFloat(paragraphWidthValue.doubleValue)
+        }
+        
+        if let colorRValue = dictionary.object(forKey: SMTextNodeFontColorRKey) as? NSNumber {
+            r = SMClampDouble(input: colorRValue.doubleValue, min: 0.0, max: 1.0)
+            useCustomColor = true
+        }
+        if let colorGValue = dictionary.object(forKey: SMTextNodeFontColorGKey) as? NSNumber {
+            g = SMClampDouble(input: colorGValue.doubleValue, min: 0.0, max: 1.0)
+            useCustomColor = true
+        }
+        if let colorBValue = dictionary.object(forKey: SMTextNodeFontColorGKey) as? NSNumber {
+            b = SMClampDouble(input: colorBValue.doubleValue, min: 0.0, max: 1.0)
+            useCustomColor = true
+        }
+        if let colorAlphavalue = dictionary.object(forKey: SMTextNodeAlphaKey) as? NSNumber {
+            a = SMClampDouble(input: colorAlphavalue.doubleValue, min: 0.0, max: 1.0)
+            useCustomColor = true
+        }
+        
+        if useCustomColor == true {
+            _fontColor = UIColor(red: CGFloat(r), green: CGFloat(g), blue: CGFloat(b), alpha: CGFloat(a))
+        }
+        
+        if let offsetFromSpriteTypeValue = dictionary.object(forKey: SMTextNodeOffsetFromSpriteTypeKey) as? String {
+            _offsetFromSpriteType = self.offsetTypeFromString(string: offsetFromSpriteTypeValue)
+        }
+        
+        if let offsetSpriteNodeValue = dictionary.object(forKey: SMTextNodeOffsetSpriteNodeKey) as? SKSpriteNode {
+            _offsetSprite = offsetSpriteNodeValue
+        }
+        
+        self.refreshSKTexture()
+    }
+    
+    func offsetTypeFromString(string:String) -> SMTextNodeOffsetFromSpriteType {
+        var result = SMTextNodeOffsetFromSpriteType.CenteredOnSprite // assume center by default
+        
+        if SMStringsAreSame(first: string, second: SMTextNodeOffsetFromSpriteTypeStringCentered) {
+            result = .AboveSprite
+        } else if SMStringsAreSame(first: string, second: SMTextNodeOffsetFromSpriteTypeStringBelow) {
+            result = .BelowSprite
+        } else if SMStringsAreSame(first: string, second: SMTextNodeOffsetFromSpriteTypeStringLeft) {
+            result = .LeftOfSprite
+        } else if SMStringsAreSame(first: string, second: SMTextNodeOffsetFromSpriteTypeStringRight) {
+            result = .RightOfSprite
+        }
+        
+        return result
+    }
+    
     // MARK: - Offets and positions
     
     func updateOffsets() {
@@ -194,30 +323,7 @@ class SMTextNode : SKSpriteNode {
         self.position = SMPositionAddTwoPositions(first: basePosition, second: _offsetFromOrigin)
     }
     
-    // MARK: - Initialization
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        refreshSKTexture()
-    }
-    
-    init(fontNamed:String) {
-        // The next two lines of code exist because Swift 4 keeps throwing up error messages if I don't have them.
-        // There's probably a really elegant way of getting around this, but this will do for now.
-        let dummyTexture = SKTexture()
-        super.init(texture: dummyTexture, color: UIColor.white, size: dummyTexture.size())
-        
-        _fontName = fontNamed
-        refreshSKTexture()
-    }
-    
-    init(text:String) {
-        let dummyTexture = SKTexture()
-        super.init(texture: dummyTexture, color: UIColor.white, size: dummyTexture.size())
-        
-        _text = text
-        refreshSKTexture()
-    }
+    // MARK: - Textures and images
     
     func refreshSKTexture() {
         if let newTextImage = self.imageFromText(inputText: _text) {

@@ -184,7 +184,7 @@ class SMCollisionComponent : SMSpriteReferencingComponent {
         if let theSprite = self.sprite() {
             if boundingCircleRadius == 0.0 {
                 boundingCircleRadius = self.adjustedCollisionCircleRadius()
-                print("Bounding circle radius set to: \(boundingCircleRadius)")
+                //print("Bounding circle radius set to: \(boundingCircleRadius)")
             }
             
             let distanceFromPoint = SMMathDistanceBetweenPoints(first: theSprite.position, second: point)
