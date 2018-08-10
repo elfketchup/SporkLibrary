@@ -262,6 +262,18 @@ class SMButtonComponent : SMObject {
         self.updateColors()
     }
     
+    // MARK: - De-initialization
+    
+    override func willBeRemovedFromParent() {
+        self.removeFromParentNode()
+        
+        buttonNormalSprite = nil
+        buttonPressedSprite = nil
+        labelNode = nil
+        
+        super.willBeRemovedFromParent()
+    }
+    
     // MARK: - Dictionary loading
     
     override func loadFromDictionary(dictionary: NSDictionary) {

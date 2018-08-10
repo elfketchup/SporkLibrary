@@ -17,12 +17,23 @@ let SMBarDisplayComponentBarAlignmentKey        = "alignment"       // String, d
 let SMBarDisplayComponentTextAlignmentKey       = "text position"   // String, determines whether the text is positioned relative to display bar
 let SMBarDisplayComponentBarSpriteNameKey       = "bar sprite name" // String, filename used to load bar sprite node
 let SMBarDisplayComponentBackgroundBarNameKey   = "background name" // String, filename used to load background sprite node
-let SMBarDispalyComponentLabelTextKey           = "label text"      // String, text for label node displayed over bar
+let SMBarDisplayComponentBarSpriteNodeKey       = "bar sprite node" // SKSpriteNode, reference to existing sprite node
+let SMBarDisplayComponentBackgroundBarNodeKey   = "background node" // SKSpriteNode, reference to existing sprite node for background bar
+let SMBarDisplayComponentLabelTextKey           = "label text"      // String, text for label node displayed over bar
+let SMBarDisplayComponentLabelDictionaryKey     = "label info"      // NSDictionary, loads SMTextNode object
+let SMBarDisplayComponentLabelNodeKey           = "label node"      // SMTextNode, reference to existing label
 
 // String values for bar alignment
 let SMBarDisplayComponentAlignmentStringLeft    = "left"
 let SMBarDisplayComponentAlignmentStringRight   = "right"
 let SMBarDisplayComponentAlignmentStringCenter  = "center"
+
+// Text position values as strings
+let SMBarDisplayComponentTextPositionStringCenter   = "center"
+let SMBarDisplayComponentTextPositionStringAbove    = "above"
+let SMBarDisplayComponentTextPositionStringBelow    = "below"
+let SMBarDisplayComponentTextPositionStringLeft     = "left"
+let SMBarDisplayComponentTextPositionStringRight    = "right"
 
 // String values for text alignment
 //let SMBar
@@ -53,6 +64,8 @@ class SMBarDisplayComponent : SMObject {
     private var _position       = CGPoint(x: 0, y: 0)
     private var _barAlignment   = SMBarDisplayComponentAlignment.Center
     private var _textAlignment  = SMBarDisplayComponentTextPosition.Center
+    
+    private var originalWidthOfBarSprite = CGFloat(1.0)
     
     var barSprite : SKSpriteNode?       = nil
     var backgroundBar : SKSpriteNode?   = nil
@@ -114,7 +127,7 @@ class SMBarDisplayComponent : SMObject {
     
     init(sprite:SKSpriteNode) {
         super.init()
-        barSprite = sprite
+        setBarSpriteNode(sprite: sprite)
         
         _baseZ = sprite.zPosition
         _position = sprite.position
@@ -124,7 +137,8 @@ class SMBarDisplayComponent : SMObject {
     
     init(sprite:SKSpriteNode, backgroundSprite:SKSpriteNode) {
         super.init()
-        barSprite = sprite
+        //barSprite = sprite
+        setBarSpriteNode(sprite: sprite)
         backgroundBar = backgroundSprite
         
         _position = sprite.position
@@ -135,7 +149,8 @@ class SMBarDisplayComponent : SMObject {
     
     init(labelText:String, sprite:SKSpriteNode, backgroundSprite:SKSpriteNode) {
         super.init()
-        barSprite = sprite
+        //barSprite = sprite
+        setBarSpriteNode(sprite: sprite)
         backgroundBar = backgroundSprite
         setLabelText(string: labelText)
         
@@ -147,7 +162,8 @@ class SMBarDisplayComponent : SMObject {
     
     init(barSpriteName:String) {
         super.init()
-        barSprite = SKSpriteNode(imageNamed: barSpriteName)
+        let sprite = SKSpriteNode(imageNamed: barSpriteName)
+        setBarSpriteNode(sprite: sprite)
         
         updateZPositions()
         updateBarDisplay()
@@ -155,7 +171,8 @@ class SMBarDisplayComponent : SMObject {
     
     init(barSpriteName:String, backgroundBarName:String) {
         super.init()
-        barSprite = SKSpriteNode(imageNamed: barSpriteName)
+        let sprite = SKSpriteNode(imageNamed: barSpriteName)
+        setBarSpriteNode(sprite: sprite)
         backgroundBar = SKSpriteNode(imageNamed: backgroundBarName)
         
         updateZPositions()
@@ -164,7 +181,8 @@ class SMBarDisplayComponent : SMObject {
     
     init(labelText:String, barSpriteName:String, backgroundBarName:String) {
         super.init()
-        barSprite = SKSpriteNode(imageNamed: barSpriteName)
+        let sprite = SKSpriteNode(imageNamed: barSpriteName)
+        setBarSpriteNode(sprite: sprite)
         backgroundBar = SKSpriteNode(imageNamed: backgroundBarName)
         setLabelText(string: labelText)
         
@@ -180,24 +198,20 @@ class SMBarDisplayComponent : SMObject {
         updateBarDisplay()
     }
     
-    // MARK: - Dictionary loading
+    // MARK: - De-init
     
-    /*
-     // MARK: - Dictionary keys
-     let SMBarDisplayComponentBaseZKey               = "z"               // CGFloat, base Z for all sprites
-     let SMBarDisplayComponentPositionXKey           = "x"               // CGFloat, x coordinate where sprites are centered around
-     let SMBarDisplayComponentPositionYKey           = "y"               // CGFloat, y coordinate where sprites are centered around
-     let SMBarDisplayComponentBarAlignmentKey        = "alignment"       // String, determines whether the bar grows from the left, center, or right
-     let SMBarDisplayComponentTextAlignmentKey       = "text position"   // String, determines whether the text is positioned relative to display bar
-     let SMBarDisplayComponentBarSpriteNameKey       = "bar sprite name" // String, filename used to load bar sprite node
-     let SMBarDisplayComponentBackgroundBarNameKey   = "background name" // String, filename used to load background sprite node
-     let SMBarDispalyComponentLabelTextKey           = "label text"      // String, text for label node displayed over bar
-     
-     // String values for bar alignment
-     let SMBarDisplayComponentAlignmentStringLeft    = "left"
-     let SMBarDisplayComponentAlignmentStringRight   = "right"
-     let SMBarDisplayComponentAlignmentStringCenter  = "center"
- */
+    override func willBeRemovedFromParent() {
+        self.removeFromParentNode()
+        
+        barSprite = nil
+        backgroundBar = nil
+        labelNode = nil
+        
+        super.willBeRemovedFromParent()
+    }
+    
+    // MARK: - Dictionary loading
+
     override func loadFromDictionary(dictionary: NSDictionary) {
         super.loadFromDictionary(dictionary: dictionary)
         
@@ -217,43 +231,229 @@ class SMBarDisplayComponent : SMObject {
             _baseZ = CGFloat(zValue.doubleValue)
         }
         
+        // get alignments
+        if let barAlignmentValue = dictionary.object(forKey: SMBarDisplayComponentBarAlignmentKey) as? String {
+            _barAlignment = self.barAlignmentFromString(string: barAlignmentValue)
+        }
+        
+        if let textPositionValue = dictionary.object(forKey: SMBarDisplayComponentTextAlignmentKey) as? String {
+            _textAlignment = self.barTextPositionFromString(string: textPositionValue)
+        }
+        
         
         // load sprites
         if let backgroundSpriteNameValue = dictionary.object(forKey: SMBarDisplayComponentBackgroundBarNameKey) as? String {
             backgroundBar = SKSpriteNode(imageNamed: backgroundSpriteNameValue)
         }
+        if let barSpriteNameValue = dictionary.object(forKey: SMBarDisplayComponentBarSpriteNameKey) as? String {
+            let sprite = SKSpriteNode(imageNamed: barSpriteNameValue)
+            setBarSpriteNode(sprite: sprite)
+        }
+        if let backgroundSpriteNodeValue = dictionary.object(forKey: SMBarDisplayComponentBackgroundBarNodeKey) as? SKSpriteNode {
+            backgroundBar = backgroundSpriteNodeValue
+        }
+        if let barSpriteNodeValue = dictionary.object(forKey: SMBarDisplayComponentBarSpriteNodeKey) as? SKSpriteNode {
+            //barSprite = barSpriteNodeValue
+            setBarSpriteNode(sprite: barSpriteNodeValue)
+        }
+        
+        // get label data
+        if let labelTextValue = dictionary.object(forKey: SMBarDisplayComponentLabelTextKey) as? String {
+            labelNode = SMTextNode(text: labelTextValue)
+        }
+        if let labelDictionaryValue = dictionary.object(forKey: SMBarDisplayComponentLabelDictionaryKey) as? NSDictionary {
+            labelNode = SMTextNode(dictionary: labelDictionaryValue)
+        }
+        if let labelNodeValue = dictionary.object(forKey: SMBarDisplayComponentLabelNodeKey) as? SMTextNode {
+            labelNode = labelNodeValue
+        }
+    }
+
+    func barTextPositionFromString(string:String) -> SMBarDisplayComponentTextPosition {
+        if SMStringsAreSame(first: string, second: SMBarDisplayComponentTextPositionStringAbove) {
+            return .Above
+        } else if SMStringsAreSame(first: string, second: SMBarDisplayComponentTextPositionStringBelow) {
+            return .Below
+        } else if SMStringsAreSame(first: string, second: SMBarDisplayComponentTextPositionStringLeft) {
+            return .Left
+        } else if SMStringsAreSame(first: string, second: SMBarDisplayComponentTextPositionStringRight) {
+            return .Right
+        }
+        
+        return .Center
+    }
+    
+    func barAlignmentFromString(string:String) -> SMBarDisplayComponentAlignment {
+        if SMStringsAreSame(first: string, second: SMBarDisplayComponentAlignmentStringLeft) {
+            return .Left
+        } else if SMStringsAreSame(first: string, second: SMBarDisplayComponentAlignmentStringRight) {
+            return .Right
+        }
+        
+        return .Center
+    }
+    
+    // MARK: - Sprite functions
+    
+    func addToNode(node:SKNode) {
+        if backgroundBar != nil {
+            node.addChild(backgroundBar!)
+        }
+        if barSprite != nil {
+            node.addChild(barSprite!)
+        }
+        if labelNode != nil {
+            node.addChild(labelNode!)
+        }
+    }
+    
+    func removeFromParentNode() {
+        if backgroundBar != nil {
+            backgroundBar!.removeAllActions()
+            backgroundBar!.removeFromParent()
+        }
+        if barSprite != nil {
+            barSprite!.removeAllActions()
+            barSprite!.removeFromParent()
+        }
+        if labelNode != nil {
+            labelNode!.removeAllActions()
+            labelNode!.removeFromParent()
+        }
+    }
+    
+    func setBarSpriteNode(sprite:SKSpriteNode) {
+        originalWidthOfBarSprite = sprite.frame.size.width
+        barSprite = sprite
     }
     
     // MARK: - Bar alignment
     
     func updateBarAlignment() {
+        if barSprite == nil {
+            return
+        }
         
+        barSprite!.xScale = _length
+        
+        switch(_barAlignment) {
+        case .Right:
+            let positionX = (_position.x + (originalWidthOfBarSprite * 0.5)) - (barSprite!.frame.size.width * 0.5)
+            let positionY = _position.y
+            
+            barSprite!.position = CGPoint(x: positionX, y: positionY)
+            
+        case .Left:
+            let positionX = (_position.x - (originalWidthOfBarSprite * 0.5)) + (barSprite!.frame.size.width * 0.5)
+            let positionY = _position.y
+
+            barSprite!.position = CGPoint(x: positionX, y: positionY)
+            
+        default: // center
+            barSprite!.position = _position
+        }
     }
     
     // MARK: - Text positioning / alignment
     
     func updateTextPosition() {
+        if barSprite == nil || labelNode == nil {
+            return
+        }
         
+        switch(_textAlignment) {
+        case .Above:
+            if backgroundBar != nil {
+                labelNode!.offsetSprite = backgroundBar
+            } else {
+                labelNode!.offsetSprite = barSprite
+            }
+            labelNode!.offsetFromSpriteType = .AboveSprite
+            labelNode!.updateOffsets()
+            
+        case .Below:
+            if backgroundBar != nil {
+                labelNode!.offsetSprite = backgroundBar
+            } else {
+                labelNode!.offsetSprite = barSprite
+            }
+            labelNode!.offsetFromSpriteType = .BelowSprite
+            labelNode!.updateOffsets()
+            
+        case .Left:
+            labelNode!.offsetSprite = nil
+            labelNode!.offsetFromSpriteType = .CenteredOnSprite
+            
+            let textX = _position.x - (originalWidthOfBarSprite * 0.5) + (labelNode!.frame.size.width * 0.5)
+            let textY = _position.y
+            
+            labelNode!.position = CGPoint(x: textX, y: textY)
+            
+        case .Right:
+            labelNode!.offsetSprite = nil
+            labelNode!.offsetFromSpriteType = .CenteredOnSprite
+            
+            let textX = _position.x + (originalWidthOfBarSprite * 0.5) - (labelNode!.frame.size.width * 0.5)
+            let textY = _position.y
+            
+            labelNode!.position = CGPoint(x: textX, y: textY)
+            
+        default: // center
+            labelNode!.position = _position
+        }
     }
  
     // MARK: - Label functions
     
     func setLabelText(string:String) {
+        if labelNode == nil {
+            labelNode = SMTextNode(text: string)
+        } else {
+            labelNode!.text = string
+        }
         
+        updateTextPosition()
     }
     
     // MARK: - Sprite positions
     
     func parentNode() -> SKNode? {
+        if barSprite != nil {
+            return barSprite!.parent
+        }
+        
         return nil
     }
     
     func updateZPositions() {
+        var zForNode = _baseZ
         
+        if backgroundBar != nil {
+            backgroundBar!.zPosition = zForNode
+            zForNode += 1.0
+        }
+        
+        if barSprite != nil {
+            barSprite!.zPosition = zForNode
+            zForNode += 1.0
+        }
+        
+        if labelNode != nil {
+            labelNode!.zPosition = zForNode
+        }
     }
     
     func updatePositions() {
+        if barSprite != nil {
+            barSprite!.position = _position
+        }
+        if backgroundBar != nil {
+            backgroundBar!.position = _position
+        }
         
+        self.updateZPositions()
+        self.updateBarAlignment()
+        self.updateTextPosition()
     }
     
     func updateBarDisplay() {

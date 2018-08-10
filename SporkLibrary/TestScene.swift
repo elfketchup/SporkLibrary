@@ -16,6 +16,8 @@ class TestScene : SKScene {
     var distanceLabel = SMTextNode(fontNamed: "Helvetica")
     let labelWithOffset = SMTextNode(text: "This is a witch")
     
+    let barEntity = SMObject()
+    
     required init?(coder aDecoder: NSCoder) {
         // does nothing
         super.init(coder: aDecoder)
@@ -38,12 +40,24 @@ class TestScene : SKScene {
             //print("Touched at: \(pos.x), \(pos.y)")
             self.touchEndedEntityCollisionTest(touchPos: pos)
         }
+        
+        self.randomizeDisplayBar()
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let t = touches.first {
             let pos = t.location(in: self)
             self.touchMovedEntityCollisionTest(touchPos: pos)
+        }
+    }
+    
+    func randomizeDisplayBar() {
+        if let component = barEntity.objectOfType(ofType: SMBarDisplayComponent.self) as? SMBarDisplayComponent {
+            let randomFloat = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
+            //print("Random float generated = \(randomFloat)")
+            component.length = randomFloat
+            
+            component.labelNode!.text = "\(randomFloat)"
         }
     }
     
@@ -90,6 +104,23 @@ class TestScene : SKScene {
         labelWithOffset.offsetSprite = SMSpriteNodeFromEntity(entity: secondWitch)
         labelWithOffset.offsetFromSpriteType = .AboveSprite
         self.addChild(labelWithOffset)
+        
+        // CRAFT BAR
+        makeBarDisplay()
+    }
+    
+    func makeBarDisplay() {
+        let component = SMBarDisplayComponent(barSpriteName: "choiceboxhalf_red")
+        component.backgroundBar = SKSpriteNode(imageNamed: "choiceboxhalf")
+        component.labelNode = SMTextNode(text: "Tap to change value")
+        component.labelNode!.fontSize = 14
+        component.position = CGPoint(x: 200, y: 80)
+        
+        barEntity.addObject(object: component)
+        component.addToNode(node: self)
+        
+        component.barAlignment = .Left
+        component.textAlignment = .Center
     }
     
     func touchMovedEntityCollisionTest(touchPos:CGPoint) {
