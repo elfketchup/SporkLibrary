@@ -459,5 +459,13 @@ class SMBarDisplayComponent : SMObject {
     func updateBarDisplay() {
         self.updatePositions()
     }
+}
+
+
+func SMBarDisplayComponentFromEntity(entity:SMObject) -> SMBarDisplayComponent? {
+    if let component = entity.objectOfType(ofType: SMBarDisplayComponent.self) as? SMBarDisplayComponent {
+        return component
+    }
     
+    return nil
 }

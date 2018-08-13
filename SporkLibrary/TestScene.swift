@@ -34,6 +34,16 @@ class TestScene : SKScene {
         labelWithOffset.updateOffsets()
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let t = touches.first {
+            let pos = t.location(in: self)
+            
+            if let witchDragComponent = secondWitch.objectOfType(ofType: SMDragSpriteComponent.self) as? SMDragSpriteComponent {
+                witchDragComponent.touchBeganAt(point: pos)
+            }
+        }
+    }
+    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let t = touches.first {
             let pos = t.location(in: self)
@@ -47,7 +57,10 @@ class TestScene : SKScene {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let t = touches.first {
             let pos = t.location(in: self)
-            self.touchMovedEntityCollisionTest(touchPos: pos)
+            if let witchDragComponent = secondWitch.objectOfType(ofType: SMDragSpriteComponent.self) as? SMDragSpriteComponent {
+                witchDragComponent.touchMovedTo(point: pos)
+            }
+            //self.touchMovedEntityCollisionTest(touchPos: pos)
         }
     }
     
@@ -104,6 +117,9 @@ class TestScene : SKScene {
         labelWithOffset.offsetSprite = SMSpriteNodeFromEntity(entity: secondWitch)
         labelWithOffset.offsetFromSpriteType = .AboveSprite
         self.addChild(labelWithOffset)
+        
+        let witchDragComponent = SMDragSpriteComponent(withSpriteComponent: witchSpriteTwo)
+        secondWitch.addObject(object: witchDragComponent)
         
         // CRAFT BAR
         makeBarDisplay()
