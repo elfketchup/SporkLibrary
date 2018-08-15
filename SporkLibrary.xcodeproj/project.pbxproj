@@ -12,6 +12,7 @@
 		1A27D21520E04AB0003BA615 /* SMMovementComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A27D21420E04AB0003BA615 /* SMMovementComponent.swift */; };
 		1A53023C20E98CC40015B862 /* SMCollisionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A53023B20E98CC40015B862 /* SMCollisionComponent.swift */; };
 		1A694CF4211F7F2000DDB024 /* SMTouchableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A694CF3211F7F2000DDB024 /* SMTouchableComponent.swift */; };
+		1A694CF6212138A700DDB024 /* SMTouchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A694CF5212138A700DDB024 /* SMTouchManager.swift */; };
 		1A8C59E920D9AA7000B5B92E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8C59E820D9AA7000B5B92E /* AppDelegate.swift */; };
 		1A8C59EB20D9AA7000B5B92E /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 1A8C59EA20D9AA7000B5B92E /* GameScene.sks */; };
 		1A8C59ED20D9AA7000B5B92E /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 1A8C59EC20D9AA7000B5B92E /* Actions.sks */; };
@@ -38,6 +39,7 @@
 		1A27D21420E04AB0003BA615 /* SMMovementComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMMovementComponent.swift; sourceTree = "<group>"; };
 		1A53023B20E98CC40015B862 /* SMCollisionComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMCollisionComponent.swift; sourceTree = "<group>"; };
 		1A694CF3211F7F2000DDB024 /* SMTouchableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTouchableComponent.swift; sourceTree = "<group>"; };
+		1A694CF5212138A700DDB024 /* SMTouchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTouchManager.swift; sourceTree = "<group>"; };
 		1A8C59E520D9AA7000B5B92E /* SporkLibrary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporkLibrary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A8C59E820D9AA7000B5B92E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1A8C59EA20D9AA7000B5B92E /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				1AACE69020DB545400DDB2AF /* SMTextNode.swift */,
 				1A14EAE4211D2A52000EC37D /* SMDragSpriteComponent.swift */,
 				1A694CF3211F7F2000DDB024 /* SMTouchableComponent.swift */,
+				1A694CF5212138A700DDB024 /* SMTouchManager.swift */,
 			);
 			path = "Base classes";
 			sourceTree = "<group>";
@@ -219,6 +222,7 @@
 				1AA971BA20EAEEAB00F7A185 /* SMSpriteReferencingComponent.swift in Sources */,
 				1A8C59F120D9AA7000B5B92E /* GameViewController.swift in Sources */,
 				1AA135DB20FFC00D00F445D2 /* SMButtonManager.swift in Sources */,
+				1A694CF6212138A700DDB024 /* SMTouchManager.swift in Sources */,
 				1A8C59E920D9AA7000B5B92E /* AppDelegate.swift in Sources */,
 				1A8C5A0420D9AAFE00B5B92E /* SMUtils.swift in Sources */,
 				1AFD919C20EC23D600ED090E /* TestScene.swift in Sources */,
