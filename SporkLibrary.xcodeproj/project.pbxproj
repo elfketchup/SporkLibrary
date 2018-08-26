@@ -28,6 +28,7 @@
 		1AA971BA20EAEEAB00F7A185 /* SMSpriteReferencingComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA971B920EAEEAB00F7A185 /* SMSpriteReferencingComponent.swift */; };
 		1AACE68F20DB53E900DDB2AF /* SMSpriteComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AACE68E20DB53E900DDB2AF /* SMSpriteComponent.swift */; };
 		1AACE69120DB545400DDB2AF /* SMTextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AACE69020DB545400DDB2AF /* SMTextNode.swift */; };
+		1AEA3275213204410061A118 /* SMDragDropLocationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEA3274213204410061A118 /* SMDragDropLocationComponent.swift */; };
 		1AEE75A22109674400F0C779 /* SMBarDisplayComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEE75A12109674400F0C779 /* SMBarDisplayComponent.swift */; };
 		1AF0208120F44DCB00707748 /* SMButtonComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF0208020F44DCB00707748 /* SMButtonComponent.swift */; };
 		1AFD919C20EC23D600ED090E /* TestScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFD919B20EC23D600ED090E /* TestScene.swift */; };
@@ -57,6 +58,7 @@
 		1AA971B920EAEEAB00F7A185 /* SMSpriteReferencingComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSpriteReferencingComponent.swift; sourceTree = "<group>"; };
 		1AACE68E20DB53E900DDB2AF /* SMSpriteComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSpriteComponent.swift; sourceTree = "<group>"; };
 		1AACE69020DB545400DDB2AF /* SMTextNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTextNode.swift; sourceTree = "<group>"; };
+		1AEA3274213204410061A118 /* SMDragDropLocationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMDragDropLocationComponent.swift; sourceTree = "<group>"; };
 		1AEE75A12109674400F0C779 /* SMBarDisplayComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMBarDisplayComponent.swift; sourceTree = "<group>"; };
 		1AF0208020F44DCB00707748 /* SMButtonComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMButtonComponent.swift; sourceTree = "<group>"; };
 		1AFD919B20EC23D600ED090E /* TestScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestScene.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				1A53023B20E98CC40015B862 /* SMCollisionComponent.swift */,
 				1AACE69020DB545400DDB2AF /* SMTextNode.swift */,
 				1A14EAE4211D2A52000EC37D /* SMDragSpriteComponent.swift */,
+				1AEA3274213204410061A118 /* SMDragDropLocationComponent.swift */,
 				1A694CF3211F7F2000DDB024 /* SMTouchableComponent.swift */,
 				1A694CF5212138A700DDB024 /* SMTouchManager.swift */,
 			);
@@ -211,6 +214,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AEA3275213204410061A118 /* SMDragDropLocationComponent.swift in Sources */,
 				1AACE68F20DB53E900DDB2AF /* SMSpriteComponent.swift in Sources */,
 				1AF0208120F44DCB00707748 /* SMButtonComponent.swift in Sources */,
 				1AACE69120DB545400DDB2AF /* SMTextNode.swift in Sources */,

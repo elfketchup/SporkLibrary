@@ -13,6 +13,10 @@ class SMDragSpriteComponent : SMTouchableComponent {
     
     var canBeDragged = true
     
+    var dropID = 0 // Used for identifying a valid place to drag-and-drop
+    
+    var dropSpots : NSArray? = nil // array of "drag and drop" locations 
+    
     // MARK: - Input handling
     
     override func didMoveTo(point: CGPoint) {
