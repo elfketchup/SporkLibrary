@@ -16,7 +16,12 @@ class TestScene : SKScene {
     var distanceLabel = SMTextNode(fontNamed: "Helvetica")
     let labelWithOffset = SMTextNode(text: "This is a witch")
     
+    
     let barEntity = SMObject()
+    
+    // drag and drop test variables
+    let dragDropArray = NSMutableArray()
+    var dropZoneWitch = SMObject()
     
     required init?(coder aDecoder: NSCoder) {
         // does nothing
@@ -118,11 +123,30 @@ class TestScene : SKScene {
         labelWithOffset.offsetFromSpriteType = .AboveSprite
         self.addChild(labelWithOffset)
         
-        let witchDragComponent = SMDragSpriteComponent(withSpriteComponent: witchSpriteTwo)
-        secondWitch.addObject(object: witchDragComponent)
-        
         // CRAFT BAR
         makeBarDisplay()
+        
+        // set up drag drop test
+        let witchDragComponent = SMDragSpriteComponent(withSpriteComponent: witchSpriteTwo)
+        secondWitch.addObject(object: witchDragComponent)
+        self.setupDragDropTest()
+    }
+    
+    func setupDragDropTest() {
+        // add second witch to drop zone array
+        dragDropArray.add(secondWitch)
+        
+        let spriteForDropWitch = SKSpriteNode(imageNamed: "witch1")
+        spriteForDropWitch.colorBlendFactor = 1.0
+        spriteForDropWitch.color = UIColor.red
+        spriteForDropWitch.position = CGPoint(x: 60, y: 300)
+        self.addChild(spriteForDropWitch)
+        //let spriteComponentForDropWitch = SMSpriteComponent(withSpriteNode: spriteForDropWitch)
+        //dropZoneWitch.addObject(object: spriteComponentForDropWitch)
+        
+        let dropZoneComponent = SMDragDropLocationComponent(withSpriteNode: spriteForDropWitch)
+        dropZoneWitch.addObject(object: dropZoneComponent)
+        dropZoneComponent.arrayOfEntitiesToCheck = dragDropArray
     }
     
     func makeBarDisplay() {
@@ -161,6 +185,7 @@ class TestScene : SKScene {
     func doEntityCollisionTest(deltaTime:TimeInterval) {
         witchEntity.update(deltaTime: deltaTime)
         secondWitch.update(deltaTime: deltaTime)
+        dropZoneWitch.update(deltaTime: deltaTime)
         
         // TRACK DISTANCE
         /*if let firstWitchCollider = witchEntity.objectOfType(ofType: SMCollisionComponent.self) as? SMCollisionComponent {

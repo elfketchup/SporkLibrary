@@ -15,6 +15,16 @@ import SpriteKit
  */
 class SMDragDropLocationComponent : SMSpriteReferencingComponent {
     
+    // Array of entities to check for sprite components; if sprites are within the boundaries of the drop zone,
+    // then they'll be moved to the center of the drop zone
+    var arrayOfEntitiesToCheck : NSArray? = nil
+    
+    // The duration (in seconds) that it takes for a sprite to be moved to the center of the drop zone
+    var durationOfSpriteMovementInSeconds = Double(0.5)
+    
+    // Determines whether or not drag-and-drop functionality is active (false would make this inactive and not do anything)
+    var dragDropIsActive = true
+    
     // MARK: - Initialization
     
     override init(withSpriteNode: SKSpriteNode) {
@@ -45,6 +55,25 @@ class SMDragDropLocationComponent : SMSpriteReferencingComponent {
         return false
     }
     
+    // Determines if  the sprite should be moved to the center of the drop zone
+    func spriteShouldMoveToDropZone(spriteToCheck:SKSpriteNode) -> Bool {
+        // check if this should be inactive to begin with
+        if dragDropIsActive == false {
+            return false
+        }
+        
+        guard let dropZoneSprite = self.sprite() else {
+            return false
+        }
+        
+        // check if both sprites are already in the exact same position
+        if spriteToCheck.position.x == dropZoneSprite.position.x && spriteToCheck.position.y == dropZoneSprite.position.y {
+            return false // no need to move since they're already in the same spot
+        }
+        
+        return spriteIsInDropZone(spriteToCheck: spriteToCheck)
+    }
+    
     // MARK: - Moving sprite to drop zone
     
     func moveSpriteToDropzone(spriteToMove:SKSpriteNode, durationInSeconds:Double) {
@@ -53,10 +82,45 @@ class SMDragDropLocationComponent : SMSpriteReferencingComponent {
             if durationInSeconds <= 0.0 {
                 spriteToMove.position = spriteObject.position
             } else {
-                // create action for moving this sprite
-                let moveAction = SKAction.move(to: spriteObject.position, duration: durationInSeconds)
-                spriteToMove.run(moveAction, withKey: "SMDragDropLocationComponent")
+                // only start the move action if there's no pre-existing "move to location" action being implemented on the sprite
+                if spriteToMove.action(forKey: "SMDragDropLocationComponent") == nil {
+                    // create action for moving this sprite
+                    let moveAction = SKAction.move(to: spriteObject.position, duration: durationInSeconds)
+                    spriteToMove.run(moveAction, withKey: "SMDragDropLocationComponent")
+                }
             }
         }
     }
-}
+    
+    // MARK: - Updates
+    
+    override func update(deltaTime: Double) {
+        super.update(deltaTime: deltaTime)
+        
+        // check if this even should be doing anything
+        if dragDropIsActive == false {
+            return
+        }
+        
+        if arrayOfEntitiesToCheck == nil {
+            return
+        }
+        if arrayOfEntitiesToCheck!.count < 1 {
+            return
+        }
+        
+        // loop backwards through the array in case any objects get removed (unlikely to happen while this loop is running)
+        for i in (0..<arrayOfEntitiesToCheck!.count).reversed() {
+            let entity = arrayOfEntitiesToCheck!.object(at: i) as! SMObject
+            
+            if let dragSpriteComponent = SMDragSpriteComponentFromEntity(entity: entity) {
+                if let otherComponentSprite = dragSpriteComponent.sprite() {
+                    // check if anything needs to be done with this sprite
+                    if self.spriteShouldMoveToDropZone(spriteToCheck: otherComponentSprite) == true {
+                        self.moveSpriteToDropzone(spriteToMove: otherComponentSprite, durationInSeconds: durationOfSpriteMovementInSeconds)
+                    }
+                }
+            } // end if let dragspritecomponent
+        } // end for loop
+    } // end update
+} // end class
