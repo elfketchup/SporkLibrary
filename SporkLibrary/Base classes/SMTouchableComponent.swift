@@ -110,6 +110,7 @@ class SMTouchableComponent : SMSpriteReferencingComponent {
             
             if isBeingTouched == true {
                 self.didEndTouchAt(point: point)
+                isBeingTouched = false
             }
         }
     }

@@ -25,6 +25,9 @@ class SMDragDropLocationComponent : SMSpriteReferencingComponent {
     // Determines whether or not drag-and-drop functionality is active (false would make this inactive and not do anything)
     var dragDropIsActive = true
     
+    // Determines if this component should wait until touch has ended on the SMDragSpriteComponent before doing any processing (true by default)
+    var waitUntilTouchEnded = true
+    
     // MARK: - Initialization
     
     override init(withSpriteNode: SKSpriteNode) {
@@ -114,10 +117,22 @@ class SMDragDropLocationComponent : SMSpriteReferencingComponent {
             let entity = arrayOfEntitiesToCheck!.object(at: i) as! SMObject
             
             if let dragSpriteComponent = SMDragSpriteComponentFromEntity(entity: entity) {
-                if let otherComponentSprite = dragSpriteComponent.sprite() {
-                    // check if anything needs to be done with this sprite
-                    if self.spriteShouldMoveToDropZone(spriteToCheck: otherComponentSprite) == true {
-                        self.moveSpriteToDropzone(spriteToMove: otherComponentSprite, durationInSeconds: durationOfSpriteMovementInSeconds)
+                
+                var canInteractWithDragSpriteComponent = true
+                
+                // determine if the drag sprite component should NOT be interacted with
+                if waitUntilTouchEnded == true && dragSpriteComponent.dragEnded == false {
+                    canInteractWithDragSpriteComponent = false
+                } else {
+                    canInteractWithDragSpriteComponent = true
+                }
+                
+                if canInteractWithDragSpriteComponent == true {
+                    if let otherComponentSprite = dragSpriteComponent.sprite() {
+                        // check if anything needs to be done with this sprite
+                        if self.spriteShouldMoveToDropZone(spriteToCheck: otherComponentSprite) == true {
+                            self.moveSpriteToDropzone(spriteToMove: otherComponentSprite, durationInSeconds: durationOfSpriteMovementInSeconds)
+                        }
                     }
                 }
             } // end if let dragspritecomponent

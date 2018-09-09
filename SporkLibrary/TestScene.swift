@@ -54,6 +54,10 @@ class TestScene : SKScene {
             let pos = t.location(in: self)
             //print("Touched at: \(pos.x), \(pos.y)")
             self.touchEndedEntityCollisionTest(touchPos: pos)
+            
+            if let witchDragComponent = secondWitch.objectOfType(ofType: SMDragSpriteComponent.self) as? SMDragSpriteComponent {
+                witchDragComponent.touchEndedAt(point: pos)
+            }
         }
         
         self.randomizeDisplayBar()

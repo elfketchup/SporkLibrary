@@ -15,7 +15,9 @@ class SMDragSpriteComponent : SMTouchableComponent {
     
     var dropID = 0 // Used for identifying a valid place to drag-and-drop
     
-    var dropSpots : NSArray? = nil // array of "drag and drop" locations 
+    var dropSpots : NSArray? = nil // array of "drag and drop" locations
+    
+    var dragEnded = false
     
     // MARK: - Input handling
     
@@ -30,6 +32,19 @@ class SMDragSpriteComponent : SMTouchableComponent {
                 spriteObject.position = point
             }
         }
+        
+        dragEnded = false
+    }
+    
+    override func touchBeganAt(point: CGPoint) {
+        super.touchBeganAt(point: point)
+        dragEnded = false
+    }
+    
+    override func touchEndedAt(point: CGPoint) {
+        super.touchBeganAt(point: point)
+        dragEnded = true
+        print("Drag ended = \(dragEnded)")
     }
 }
 
