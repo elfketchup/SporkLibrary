@@ -8,14 +8,16 @@
 
 import SpriteKit
 
+
+
 // add to entity to allow the sprite to be dragged around (and dropped into certain areas)
 class SMDragSpriteComponent : SMTouchableComponent {
     
     var canBeDragged = true
     
-    var dropID = 0 // Used for identifying a valid place to drag-and-drop
+    var dropID = 0 // Used for identifying a valid place to drag-and-drop (value of "zero" means "any drop zone is OK")
     
-    var dropSpots : NSArray? = nil // array of "drag and drop" locations
+    //var dropSpots : NSArray? = nil // array of "drag and drop" locations
     
     var dragEnded = false
     
@@ -42,9 +44,9 @@ class SMDragSpriteComponent : SMTouchableComponent {
     }
     
     override func touchEndedAt(point: CGPoint) {
-        super.touchBeganAt(point: point)
+        super.touchEndedAt(point: point)
         dragEnded = true
-        print("Drag ended = \(dragEnded)")
+        //print("Drag ended = \(dragEnded)")
     }
 }
 

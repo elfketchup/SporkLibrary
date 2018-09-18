@@ -24,8 +24,8 @@ var SMFramesPerSecond = 60.0
 
 // Just tells SMUtils what the screen size is supposed to be (some later calculations are based off this information)
 func SMSetScreenSizeInPointsTo(width:CGFloat, height:CGFloat) {
-    SMScreenWidthInPoints = fabs( width );
-    SMScreenHeightInPoints = fabs( height );
+    SMScreenWidthInPoints = abs(width)//fabs( width );
+    SMScreenHeightInPoints = abs(height);
     
     //print("[SMSetScreenSizeInPoints] - width: \(SMScreenWidthInPoints) | height: \(SMScreenHeightInPoints)")
     
@@ -142,7 +142,7 @@ func SMRadiansToDegrees( radians:CGFloat ) -> CGFloat {
 }
 
 // Gets the angle between origin and another object
-func EKFindAngleBetweenPoints( original:CGPoint, target:CGPoint ) -> CGFloat {
+func SMFindAngleBetweenPoints( original:CGPoint, target:CGPoint ) -> CGFloat {
     let mX = target.x - original.x;
     let mY = target.y - original.y;
     

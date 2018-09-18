@@ -28,6 +28,10 @@ class SMDragDropLocationComponent : SMSpriteReferencingComponent {
     // Determines if this component should wait until touch has ended on the SMDragSpriteComponent before doing any processing (true by default)
     var waitUntilTouchEnded = true
     
+    // ID for drag-and-drop, drag components can be dragged here IF they have a value of zero (meaning "any") or if they have the
+    // same ID number as this component.
+    var dropID = 0
+    
     // MARK: - Initialization
     
     override init(withSpriteNode: SKSpriteNode) {
@@ -127,6 +131,11 @@ class SMDragDropLocationComponent : SMSpriteReferencingComponent {
                     canInteractWithDragSpriteComponent = true
                 }
                 
+                // Check if this drag sprite component has an invalid ID that doesn't match this (or it's non-zero, as zero means "any ID is fine")
+                if dragSpriteComponent.dropID != 0 && dragSpriteComponent.dropID != self.dropID {
+                    canInteractWithDragSpriteComponent = false // no interaction can be done
+                }
+                
                 if canInteractWithDragSpriteComponent == true {
                     if let otherComponentSprite = dragSpriteComponent.sprite() {
                         // check if anything needs to be done with this sprite
@@ -139,3 +148,11 @@ class SMDragDropLocationComponent : SMSpriteReferencingComponent {
         } // end for loop
     } // end update
 } // end class
+
+func SMDragDropLocationComponentFromEntity(entity:SMObject) -> SMDragDropLocationComponent? {
+    if let component = entity.objectOfType(ofType: SMDragDropLocationComponent.self) as? SMDragDropLocationComponent {
+        return component
+    }
+    
+    return nil
+}

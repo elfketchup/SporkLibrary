@@ -69,4 +69,31 @@ class SMTouchManager : SMObject {
             }
         }
     }
+    
+    // MARK: - Update
+    
+    func removeUnusableTouchComponents() {
+        if children == nil {
+            return
+        }
+        if children!.count < 1 {
+            return
+        }
+        
+        for i in (0..<children!.count).reversed() {
+            let currentEntity = children!.object(at: i) as! SMObject
+            
+            if let touchableComponent = SMTouchableComponentFromEntity(entity: currentEntity) {
+                if touchableComponent.shouldBeRemovedFromTouchManager == true {
+                    children!.removeObject(at: i)
+                }
+            }
+        }
+    }
+    
+    override func update(deltaTime: Double) {
+        super.update(deltaTime: deltaTime)
+        
+        self.removeUnusableTouchComponents()
+    }
 }

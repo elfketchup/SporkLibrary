@@ -57,6 +57,14 @@ class TestScene : SKScene {
             
             if let witchDragComponent = secondWitch.objectOfType(ofType: SMDragSpriteComponent.self) as? SMDragSpriteComponent {
                 witchDragComponent.touchEndedAt(point: pos)
+                
+                print("Witch drag start: \(witchDragComponent.touchBeganPoint.x), \(witchDragComponent.touchBeganPoint.y)")
+                print("Witch drag end: \(witchDragComponent.touchEndedPoint.x), \(witchDragComponent.touchEndedPoint.x)")
+                let touchMoveDistance = SMMathDistanceBetweenPoints(first: witchDragComponent.touchBeganPoint, second: witchDragComponent.touchEndedPoint)
+                print("Touch move distance = \(touchMoveDistance)")
+                
+                let angleOfMove = witchDragComponent.angleInDegreesFromTouchBeganToEnd()
+                print("Angle of move was: \(angleOfMove)")
             }
         }
         

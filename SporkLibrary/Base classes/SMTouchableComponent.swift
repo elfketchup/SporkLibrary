@@ -8,6 +8,9 @@
 
 import SpriteKit
 
+// Dictionary keys
+let SMTouchableComponentRespondsToTouchKey  = "responds to touch" // Bool, determines if it responds to touch right after being loaded
+
 /*
  SMTouchableComponent
  
@@ -15,10 +18,18 @@ import SpriteKit
  */
 class SMTouchableComponent : SMSpriteReferencingComponent {
     
-    var respondsToTouch = true
-    var isBeingTouched = false
-    var startedTouchHere = false
-    var endedTouchHere = false
+    var respondsToTouch     = true  // can be touched at all
+    var isBeingTouched      = false // is currently being touched
+    var startedTouchHere    = false // touch started on this component (and not on some other component or other area of screen)
+    var endedTouchHere      = false // touch ended on this component (and not on another component or other area of the screen)
+    
+    // Track movement
+    var touchBeganPoint = CGPoint(x: 0, y: 0)
+    var touchMovedPoint = CGPoint(x: 0, y: 0)
+    var touchEndedPoint = CGPoint(x: 0, y: 0)
+    
+    // Determines if this should be removed from SMTouchManager (or similar manager class) for some reason. Will usually be removed during update
+    var shouldBeRemovedFromTouchManager = false
     
     // MARK: - Initializations
     
@@ -36,22 +47,58 @@ class SMTouchableComponent : SMSpriteReferencingComponent {
         super.init(withSpriteComponent: withSpriteComponent)
     }
     
+    // MARK: - Dictionary loading
+    
+    override func loadFromDictionary(dictionary: NSDictionary) {
+        super.loadFromDictionary(dictionary: dictionary)
+        
+        if let respondToTouchValue = dictionary.object(forKey: SMTouchableComponentRespondsToTouchKey) as? NSNumber {
+            respondsToTouch = respondToTouchValue.boolValue
+        }
+    }
+    
+    // MARK: - Distance handling
+    
+    func distanceFromTouchBeganToEnd() -> CGFloat {
+        return SMMathDistanceBetweenPoints(first: touchBeganPoint, second: touchEndedPoint)
+    }
+    
+    func horizontalDistanceFromTouchBeganToEnd() -> CGFloat {
+        return touchEndedPoint.x - touchBeganPoint.x
+    }
+    
+    func verticalDistanceFromTouchBeganToEnd() -> CGFloat {
+        return touchEndedPoint.y - touchBeganPoint.y
+    }
+    
+    func angleInDegreesFromTouchBeganToEnd() -> CGFloat {
+        if touchBeganPoint.x == touchEndedPoint.x && touchBeganPoint.y == touchEndedPoint.y {
+            return 0
+        }
+        
+        return SMFindAngleBetweenPoints(original: touchBeganPoint, target: touchEndedPoint)
+    }
+    
     // MARK: - Input handling
     
     func didStartTouchAt(point:CGPoint) {
-        // nothing
+        // erase previous movement data
+        touchMovedPoint = CGPoint(x: 0, y: 0)
+        touchEndedPoint = CGPoint(x: 0, y: 0)
+        
+        touchBeganPoint = point
     }
     
     func didMoveTo(point:CGPoint) {
-        // nothing done
+        touchMovedPoint = point
     }
     
     func didMoveTo(point:CGPoint, previousPoint:CGPoint) {
-        // nothing done
+        touchMovedPoint = point
     }
     
     func didEndTouchAt(point:CGPoint) {
-        // nothing done, handle "touch up" input here
+        touchEndedPoint = point
     }
     
     // MARK: - Touch input
