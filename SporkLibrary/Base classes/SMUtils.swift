@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import SpriteKit
 import AVFoundation
+import Dispatch
 
 // Set screen/view dimensions; use default sizes for iPhone SE
 var SMScreenWidthInPoints:CGFloat   = 320.0;
@@ -498,6 +499,50 @@ func SMAudioSoundFromFile( filename:String ) -> AVAudioPlayer? {
     
     return audio
 }
+
+/*
+ Plays music by creating AVAudioPlayer and playing it. The object is also returned, so it can be
+ paused or stopped if necessary.
+ */
+func SMAudioPlayMusic(filename:String, loopForever:Bool) -> AVAudioPlayer? {
+    if let musicAudioObject = SMAudioSoundFromFile(filename: filename) {
+        if loopForever == true {
+            musicAudioObject.numberOfLoops = -1
+        }
+        
+        musicAudioObject.play()
+        
+        return musicAudioObject // ret
+    }
+    
+    return nil
+}
+
+/*
+ Fade one audio out and a new audio in. Useful for fading in between music.
+ */
+func SMAudioCrossFadeBetweenAudios(oldAudio:AVAudioPlayer, newAudio:AVAudioPlayer, fromVolume:Float, toVolume:Float, timeInSeconds:Float) {
+    // Update the volume every 1/100 of a second
+    let fadeSteps : Int = Int(timeInSeconds) * 100
+    // Work out how much time each step will take
+    //let timePerStep : Float = 1 / 100.0
+    
+    oldAudio.volume = fromVolume
+    
+    // Schedule a number of volume changes
+    for step in 0...fadeSteps {
+        //let delayInSeconds : Float = Float(step) * timePerStep
+        let popTime = DispatchTime.now() + DispatchTimeInterval.seconds(Int(timeInSeconds))
+        //let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Float(NSEC_PER_SEC)));
+        //dispatch_after(popTime, dispatch_get_main_queue()) {
+        DispatchQueue.main.asyncAfter(deadline: popTime) {
+            let fraction = (Float(step) / Float(fadeSteps))
+            newAudio.volume = fromVolume +
+                (toVolume - fromVolume) * fraction
+        }
+    }
+}
+
 
 
 // MARK: - Swift/Foundation conversion

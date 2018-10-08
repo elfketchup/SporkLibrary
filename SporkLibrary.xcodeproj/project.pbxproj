@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1A14EAE5211D2A52000EC37D /* SMDragSpriteComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A14EAE4211D2A52000EC37D /* SMDragSpriteComponent.swift */; };
+		1A1A3ED12169936900776439 /* SMAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1A3ED02169936900776439 /* SMAudioManager.swift */; };
 		1A27D21320DBFF98003BA615 /* readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 1A27D21220DBFF98003BA615 /* readme.md */; };
 		1A27D21520E04AB0003BA615 /* SMMovementComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A27D21420E04AB0003BA615 /* SMMovementComponent.swift */; };
 		1A53023C20E98CC40015B862 /* SMCollisionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A53023B20E98CC40015B862 /* SMCollisionComponent.swift */; };
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		1A14EAE4211D2A52000EC37D /* SMDragSpriteComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMDragSpriteComponent.swift; sourceTree = "<group>"; };
+		1A1A3ED02169936900776439 /* SMAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMAudioManager.swift; sourceTree = "<group>"; };
 		1A27D21220DBFF98003BA615 /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = readme.md; sourceTree = SOURCE_ROOT; };
 		1A27D21420E04AB0003BA615 /* SMMovementComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMMovementComponent.swift; sourceTree = "<group>"; };
 		1A53023B20E98CC40015B862 /* SMCollisionComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMCollisionComponent.swift; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 				1AEA3274213204410061A118 /* SMDragDropLocationComponent.swift */,
 				1A694CF3211F7F2000DDB024 /* SMTouchableComponent.swift */,
 				1A694CF5212138A700DDB024 /* SMTouchManager.swift */,
+				1A1A3ED02169936900776439 /* SMAudioManager.swift */,
 			);
 			path = "Base classes";
 			sourceTree = "<group>";
@@ -219,6 +222,7 @@
 				1AACE68F20DB53E900DDB2AF /* SMSpriteComponent.swift in Sources */,
 				1AF0208120F44DCB00707748 /* SMButtonComponent.swift in Sources */,
 				1AACE69120DB545400DDB2AF /* SMTextNode.swift in Sources */,
+				1A1A3ED12169936900776439 /* SMAudioManager.swift in Sources */,
 				1AEE75A22109674400F0C779 /* SMBarDisplayComponent.swift in Sources */,
 				1A53023C20E98CC40015B862 /* SMCollisionComponent.swift in Sources */,
 				1A8C5A0220D9AA9300B5B92E /* SMObject.swift in Sources */,
