@@ -369,7 +369,9 @@ func SMStringLength( string:String ) -> Int {
 func SMStringCharacterAtIndex(string:String, indexPosition:Int ) -> Character {
     //let index = theString.characters.index(theString.characters.startIndex, offsetBy: indexPosition)
     //let theCharacter = theString.characters[index]
-    let index : String.Index = String.Index.init(encodedOffset: indexPosition)
+    //let index : String.Index = String.Index.init(encodedOffset: indexPosition)
+    
+    let index = string.index(string.startIndex, offsetBy: indexPosition)
     let theCharacter = string[index]
     
     return theCharacter

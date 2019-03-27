@@ -16,6 +16,31 @@ import SpriteKit
  */
 class SMTouchManager : SMObject {
     
+    // Touch Layers work like UI elements being on different windows in a desktop UI. An element on a foreground window would be
+    // on a different "layer" than a UI element on the foreground window. Layers normally start at 1 (and move upwards), but
+    // layers marked as zero (or negative) are considered to be "active" no matter what the current layer is. Additionally,
+    // touch managers with a layer set to zero can interact with any touchable component that's been added to them regardless
+    // of the component's actual layer value.
+    var layer = Int(0) // default layer
+    
+    // MARK: - Layer functions
+    
+    func sameLayerAsComponent(component:SMTouchableComponent) -> Bool {
+        if component.layer == self.layer {
+            return true
+        }
+        
+        return false
+    }
+    
+    func canInteractWithComponent(component:SMTouchableComponent) -> Bool {
+        if component.layer == self.layer || component.layer <= 0 || self.layer <= 0 {
+            return true
+        }
+        
+        return false
+    }
+    
     // MARK: - Input handling
     
     func touchesBegan(touches: Set<UITouch>, event: UIEvent?, node:SKNode) {
@@ -29,7 +54,9 @@ class SMTouchManager : SMObject {
             for i in 0..<children!.count {
                 let entity = children!.object(at: i) as! SMObject
                 if let touchableComponent = SMTouchableComponentFromEntity(entity: entity) {
-                    touchableComponent.touchBeganAt(point: firstTouchPosition)
+                    if canInteractWithComponent(component: touchableComponent) {
+                        touchableComponent.touchBeganAt(point: firstTouchPosition)
+                    }
                 }
             }
         }
@@ -47,7 +74,9 @@ class SMTouchManager : SMObject {
             for i in 0..<children!.count {
                 let entity = children!.object(at: i) as! SMObject
                 if let touchableComponent = SMTouchableComponentFromEntity(entity: entity) {
-                    touchableComponent.touchMovedTo(point: firstTouchPosition, fromPreviousPoint: firstTouchPreviousPosition)
+                    if canInteractWithComponent(component: touchableComponent) {
+                        touchableComponent.touchMovedTo(point: firstTouchPosition, fromPreviousPoint: firstTouchPreviousPosition)
+                    }
                 }
             }
         }
@@ -64,7 +93,9 @@ class SMTouchManager : SMObject {
             for i in 0..<children!.count {
                 let entity = children!.object(at: i) as! SMObject
                 if let touchableComponent = SMTouchableComponentFromEntity(entity: entity) {
-                    touchableComponent.touchEndedAt(point: firstTouchPosition)
+                    if canInteractWithComponent(component: touchableComponent) {
+                        touchableComponent.touchEndedAt(point: firstTouchPosition)
+                    }
                 }
             }
         }

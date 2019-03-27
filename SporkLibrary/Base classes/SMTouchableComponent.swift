@@ -18,6 +18,12 @@ let SMTouchableComponentRespondsToTouchKey  = "responds to touch" // Bool, deter
  */
 class SMTouchableComponent : SMSpriteReferencingComponent {
     
+    // The touch "layer" is similar to the concept of UI elements being on different windows in a desktop UI. A UI element on a window
+    // in the background would be on a different layer than an element on the window that a user is working on. Layers start at 1,
+    // and a touchable component with a layer marked as zero (or less) would be considered to be active no matter which actual layer
+    // is currently in use.
+    var layer = Int(0)
+    
     var respondsToTouch     = true  // can be touched at all
     var isBeingTouched      = false // is currently being touched
     var startedTouchHere    = false // touch started on this component (and not on some other component or other area of screen)
