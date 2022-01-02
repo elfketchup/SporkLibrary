@@ -19,8 +19,13 @@ let SMObjectUpdateChildren  = "update children" // Bool, on whether or not to up
  SMObject
  
  This class offers some identification for itself, and also can store "child" objects -- child objects can be added,
- searched for (by name, tag, or type), and removed. This class doesn't do much else, but is meant to be subclassed,
- and can also form the basis for an entity-component relationship with subclasses.
+ searched for (by name, tag, or type), and removed. This class doesn't do much else, but is meant to be subclassed.
+ 
+ Instead of an entity-component relationship, SMObject uses what I call an "orbit" relationship, in which any object can
+ have child objects "orbiting" around them. This is similar to entity/component relationships, except that any object can
+ simultaneously be an entity AND an component.
+ 
+ Removing an object will by default also remove any child objects in its orbit.
  */
 class SMObject : NSObject {
     // MARK: - Identification member variables
@@ -44,14 +49,19 @@ class SMObject : NSObject {
     var children:NSMutableArray? = nil
     
     /*
-     Reference to a parent object, if any.
+     Reference to a parent object, if any. Set to "weak" to avoid child nodes causing memory leaks to parent objects that should have been deleted
      */
-    var parent:SMObject? = nil
+    weak var parent:SMObject? = nil
 
     /*
      Determines whether or not this class instance will update its children when SMObject's "update" function is called. Set to 'true' by default.
     */
     var willUpdateChildren = true
+    
+    /*
+     Determines whether all information will be removed from this object when it's removed from its parent (true by default)
+    */
+    var shouldDeleteDataWhenRemovedFromParent = true
     
     // MARK: - Initialization
     
@@ -134,6 +144,20 @@ class SMObject : NSObject {
      */
     func willBeRemovedFromParent() {
         parent = nil
+        
+        if shouldDeleteDataWhenRemovedFromParent == true {
+            removeAllData()
+        }
+    }
+    
+    /*
+     Remove all data that the object possesses (to free up memory). Should be overridden by subclasses
+     */
+    func removeAllData() {
+        name = nil
+        parent = nil
+        
+        removeAllChildren()
     }
     
     // MARK: - Adding child objects

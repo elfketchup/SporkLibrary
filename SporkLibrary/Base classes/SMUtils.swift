@@ -164,7 +164,7 @@ func SMFindAngleBetweenPoints( original:CGPoint, target:CGPoint ) -> CGFloat {
         f = f + 360.0;
     }
     
-    return f; // This should be the right angle now
+    return f; // This should be the correct angle now
 }
 
 func SMClampDouble(input:Double, min:Double, max:Double) -> Double {

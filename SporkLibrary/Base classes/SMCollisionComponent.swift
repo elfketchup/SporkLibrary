@@ -179,6 +179,33 @@ class SMCollisionComponent : SMSpriteReferencingComponent {
     
     // MARK: - Collision checks
     
+    // Check if two entities (of any collision type, whether box or circle) are colliding
+    func isCollidingWithEntity(entity:SMObject) -> Bool {
+        // Determine if the other entity has any kind of collision component, otherwise there's no point doing this
+        if let otherCollisionComponent = entity.objectOfType(ofType: SMCollisionComponent.self) as? SMCollisionComponent {
+            let otherType = otherCollisionComponent.collisionType
+            
+            if otherType == .Box && collisionType == .Box {
+                return isBoxCollidingWithBox(box: otherCollisionComponent)
+            }
+            
+            if otherType == .Circle && collisionType == .Circle {
+                return isCircleCollidingWithCircle(circle: otherCollisionComponent)
+            }
+            
+            // TODO: Actually make this more accurate, this is really hastily-done right now
+            return isCircleCollidingWithCircle(circle: otherCollisionComponent)
+        }
+        
+        return false
+    }
+    
+    // Check if two boxes are colliding
+    func isBoxCollidingWithBox(box:SMCollisionComponent) -> Bool {
+        let otherBox = box.adjustedCollisionBox()
+        return adjustedCollisionBox().intersects(otherBox)
+    }
+    
     // Check if a point is within the radius of the sprite
     func isPointCollidingWithCircle(point:CGPoint) -> Bool {
         if let theSprite = self.sprite() {

@@ -14,6 +14,9 @@ import SpriteKit
  A simple manager meant to handle touches, mainly by passing along touch input messages to any entity
  that contains an SMTouchableComponent (or one of its subclasses).
  */
+
+// NOTE - 11/23/21: I don't think ANY class really seems to interact with SMTouchManager for some reason o_o
+//                  Probably because it's not a very good class that does much. 
 class SMTouchManager : SMObject {
     
     // Touch Layers work like UI elements being on different windows in a desktop UI. An element on a foreground window would be

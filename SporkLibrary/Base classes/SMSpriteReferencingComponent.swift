@@ -71,6 +71,8 @@ class SMSpriteReferencingComponent : SMObject {
             
             if existingSpriteComponent.sprite != nil {
                 spriteNode = existingSpriteComponent.sprite!
+            } else {
+                print("[SMSpriteReferencingComponent] WARNING: Was able to load sprite component from dictionary, but no associated sprite node could be found.")
             }
         }
     }
